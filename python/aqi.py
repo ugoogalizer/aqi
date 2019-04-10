@@ -90,7 +90,7 @@ def cmd_query_data():
     if d[1] == '\xc0':
         return process_data(d)
 
-    return []
+    return [None, None]
 
 
 def cmd_set_sleep(sleep=1):
@@ -139,7 +139,7 @@ def update_file(path, values):
 
 
 def monitor_air_quality():
-    number_of_readings = 15
+    number_of_readings = 5
     reading_period = 2
     readings_file = '/var/www/html/aqi.json'
 
@@ -149,17 +149,16 @@ def monitor_air_quality():
         cmd_set_sleep(0)
         cmd_set_mode(1)
 
-        for _ in range(number_of_readings):
-            values = cmd_query_data()
+        batch = []
 
-            if values:
-                print('PM2.5: ', values[0], ', PM10: ', values[1])
-            else:
-                print('PM2.5: - , PM10: - ')
+        for _ in range(number_of_readings):
+            reading = cmd_query_data()
+            print('PM2.5: ', reading[0], ', PM10: ', reading[1])
+            batch.append(reading)
 
             time.sleep(reading_period)
 
-        update_file(readings_file, values)
+        update_file(readings_file, batch)
 
         print('Going to sleep for {} seconds...'.format(sleep_duration))
 
