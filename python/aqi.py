@@ -159,12 +159,10 @@ class AirQualitySensor:
         cmd_set_sleep(0)
         cmd_set_mode(1)
 
-    def sleep(self, sleep_duration = 10):
-        print('Going to sleep for {} seconds...'.format(sleep_duration))
-
+    def sleep(self):
         cmd_set_mode(0)
         cmd_set_sleep()
-        time.sleep(sleep_duration)
+
 
 
 if __name__ == '__main__':
