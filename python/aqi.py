@@ -142,15 +142,14 @@ def monitor_air_quality():
 
             time.sleep(reading_period)
 
-        with open(readings_file) as f:
+        with open(readings_file, 'w+') as f:
             data = json.load(f)
 
-        if len(data) > maximum_file_length:
-            data.pop(0)
+            if len(data) > maximum_file_length:
+                data.pop(0)
 
-        data.append({'PM2.5': values[0], 'PM10': values[1], 'time': time.strftime('%d.%m.%Y %H:%M:%S')})
+            data.append({'PM2.5': values[0], 'PM10': values[1], 'time': time.strftime('%d.%m.%Y %H:%M:%S')})
 
-        with open(readings_file, 'w') as f:
             json.dump(data, f)
 
         print('Going to sleep for {} seconds...'.format(sleep_duration))
