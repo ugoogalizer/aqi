@@ -121,11 +121,28 @@ def cmd_set_id(id):
     read_response()
 
 
+def update_file(path, values):
+    maximum_file_length = 100
+
+    with open(path, 'w+') as f:
+        try:
+            data = json.load(f)
+        except ValueError:
+            data = []
+
+        if len(data) > maximum_file_length:
+            data.pop(0)
+
+        data.append({'PM2.5': values[0], 'PM10': values[1], 'time': time.strftime('%d.%m.%Y %H:%M:%S')})
+
+        json.dump(data, f)
+
+
 def monitor_air_quality():
     number_of_readings = 15
     reading_period = 2
     readings_file = '/var/www/html/aqi.json'
-    maximum_file_length = 100
+
     sleep_duration = 60
 
     while True:
@@ -142,20 +159,10 @@ def monitor_air_quality():
 
             time.sleep(reading_period)
 
-        with open(readings_file, 'w+') as f:
-            try:
-                data = json.load(f)
-            except (ValueError, json.decoder.JSONDecodeError):
-                data = []
-
-            if len(data) > maximum_file_length:
-                data.pop(0)
-
-            data.append({'PM2.5': values[0], 'PM10': values[1], 'time': time.strftime('%d.%m.%Y %H:%M:%S')})
-
-            json.dump(data, f)
+        update_file(readings_file, values)
 
         print('Going to sleep for {} seconds...'.format(sleep_duration))
+
         cmd_set_mode(0)
         cmd_set_sleep()
         time.sleep(sleep_duration)
