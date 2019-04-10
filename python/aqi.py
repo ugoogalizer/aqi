@@ -91,7 +91,7 @@ def cmd_query_data():
     if d[1] == '\xc0':
         return process_data(d)
 
-    return {'time': time.strftime('%d.%m.%Y %H:%M:%S'), 'PM2.5': None, 'PM10': None}
+    return {'time': time.strftime('%Y-%m-%d %H:%M:%S'), 'PM2.5': None, 'PM10': None}
 
 
 def cmd_set_sleep(sleep=1):
