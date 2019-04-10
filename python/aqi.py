@@ -51,7 +51,7 @@ def process_data(data):
     pm25 = r[0] / 10.0
     pm10 = r[1] / 10.0
     checksum = sum(ord(v) for v in data[2:8]) % 256
-    return {'PM2.5': pm25, 'PM10': pm10}
+    return {'time': time.strftime('%d.%m.%Y %H:%M:%S'), 'PM2.5': pm25, 'PM10': pm10}
     #print('PM 2.5: {} μg/m^3  PM 10: {} μg/m^3 CRC={}'.format(pm25, pm10, 'OK' if (checksum==r[2] and r[3]==0xab) else 'NOK'))
 
 
@@ -87,10 +87,11 @@ def cmd_query_data():
     serial_interface.write(construct_command(CMD_QUERY_DATA))
     d = read_response()
 
+
     if d[1] == '\xc0':
         return process_data(d)
 
-    return {'PM2.5': None, 'PM10': None}
+    return {'time': time.strftime('%d.%m.%Y %H:%M:%S'), 'PM2.5': None, 'PM10': None}
 
 
 def cmd_set_sleep(sleep=1):
@@ -121,7 +122,7 @@ def cmd_set_id(id):
     read_response()
 
 
-def update_file(path, values):
+def update_file(path, batch):
     maximum_file_length = 100
 
     with open(path, 'w+') as f:
@@ -133,7 +134,7 @@ def update_file(path, values):
         if len(data) > maximum_file_length:
             data.pop(0)
 
-        data.extend(values.update({'time': time.strftime('%d.%m.%Y %H:%M:%S')}))
+        data.extend(batch)
 
         json.dump(data, f)
 
