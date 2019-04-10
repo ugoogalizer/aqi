@@ -51,7 +51,7 @@ def process_data(data):
     pm25 = r[0] / 10.0
     pm10 = r[1] / 10.0
     checksum = sum(ord(v) for v in data[2:8]) % 256
-    return [pm25, pm10]
+    return {'PM2.5': pm25, 'PM10': pm10}
     #print('PM 2.5: {} μg/m^3  PM 10: {} μg/m^3 CRC={}'.format(pm25, pm10, 'OK' if (checksum==r[2] and r[3]==0xab) else 'NOK'))
 
 
@@ -90,7 +90,7 @@ def cmd_query_data():
     if d[1] == '\xc0':
         return process_data(d)
 
-    return [None, None]
+    return {'PM2.5': None, 'PM10': None}
 
 
 def cmd_set_sleep(sleep=1):
@@ -133,13 +133,13 @@ def update_file(path, values):
         if len(data) > maximum_file_length:
             data.pop(0)
 
-        data.append({'PM2.5': values[0], 'PM10': values[1], 'time': time.strftime('%d.%m.%Y %H:%M:%S')})
+        data.extend(values.update({'time': time.strftime('%d.%m.%Y %H:%M:%S')}))
 
         json.dump(data, f)
 
 
 def monitor_air_quality():
-    number_of_readings = 5
+    batch_size = 5
     reading_period = 2
     readings_file = '/var/www/html/aqi.json'
 
@@ -151,9 +151,9 @@ def monitor_air_quality():
 
         batch = []
 
-        for _ in range(number_of_readings):
+        for _ in range(batch_size):
             reading = cmd_query_data()
-            print('PM2.5: ', reading[0], ', PM10: ', reading[1])
+            print(reading)
             batch.append(reading)
 
             time.sleep(reading_period)
