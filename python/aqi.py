@@ -152,14 +152,7 @@ class AirQualitySensor:
             except ValueError:
                 data = []
 
-            if self.maximum_file_length:
-                if len(data) + len(batch) > self.maximum_file_length:
-                    data[0:len(batch)] = batch
-                else:
-                    data.extend(batch)
-            else:
-                data.extend(batch)
-
+            data.extend(batch)
             json.dump(data, f)
 
     def wake(self):
