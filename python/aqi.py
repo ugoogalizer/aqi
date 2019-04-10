@@ -131,8 +131,7 @@ class AirQualitySensor:
     def monitor_air_quality(self, batch_size = 5, reading_period = 2):
 
         while True:
-            cmd_set_sleep(0)
-            cmd_set_mode(1)
+            self.wake()
 
             batch = []
 
@@ -162,6 +161,10 @@ class AirQualitySensor:
                 data.extend(batch)
 
             json.dump(data, f)
+
+    def wake(self):
+        cmd_set_sleep(0)
+        cmd_set_mode(1)
 
     def sleep(self, sleep_duration = 10):
         print('Going to sleep for {} seconds...'.format(sleep_duration))
