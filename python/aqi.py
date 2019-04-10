@@ -125,7 +125,7 @@ def cmd_set_id(id):
 def update_file(path, batch):
     maximum_file_length = 100
 
-    with open(path, 'w+') as f:
+    with open(path, 'a+') as f:
         try:
             data = json.load(f)
         except ValueError:
@@ -143,8 +143,7 @@ def monitor_air_quality():
     batch_size = 5
     reading_period = 2
     readings_file = '/var/www/html/aqi.json'
-
-    sleep_duration = 60
+    sleep_duration = 10
 
     while True:
         cmd_set_sleep(0)
@@ -156,7 +155,6 @@ def monitor_air_quality():
             reading = cmd_query_data()
             print(reading)
             batch.append(reading)
-
             time.sleep(reading_period)
 
         update_file(readings_file, batch)
