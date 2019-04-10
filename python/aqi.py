@@ -122,43 +122,48 @@ def cmd_set_id(id):
     read_response()
 
 
-def update_file(path, batch):
-    maximum_file_length = 100
+class AirQualitySensor:
 
-    with open(path, 'a+') as f:
-        try:
-            data = json.load(f)
-        except ValueError:
-            data = []
+    def __init__(self, output_file_path = None, maximum_file_length = 100):
+        self.output_file_path = output_file_path
+        self.maximum_file_length = maximum_file_length
 
-        if len(data) > maximum_file_length:
-            data.pop(0)
+    def monitor_air_quality(self, batch_size = 5, reading_period = 2):
 
-        data.extend(batch)
+        while True:
+            cmd_set_sleep(0)
+            cmd_set_mode(1)
 
-        json.dump(data, f)
+            batch = []
 
+            for _ in range(batch_size):
+                reading = cmd_query_data()
+                print(reading)
+                batch.append(reading)
+                time.sleep(reading_period)
 
-def monitor_air_quality():
-    batch_size = 5
-    reading_period = 2
-    readings_file = '/var/www/html/aqi.json'
-    sleep_duration = 10
+            self.save_batch(batch)
+            self.sleep()
 
-    while True:
-        cmd_set_sleep(0)
-        cmd_set_mode(1)
+    def save_batch(self, batch):
 
-        batch = []
+        with open(self.output_file_path, 'a+') as f:
+            try:
+                data = json.load(f)
+            except ValueError:
+                data = []
 
-        for _ in range(batch_size):
-            reading = cmd_query_data()
-            print(reading)
-            batch.append(reading)
-            time.sleep(reading_period)
+            if self.maximum_file_length:
+                if len(data) + len(batch) > self.maximum_file_length:
+                    data[0:len(batch)] = batch
+                else:
+                    data.extend(batch)
+            else:
+                data.extend(batch)
 
-        update_file(readings_file, batch)
+            json.dump(data, f)
 
+    def sleep(self, sleep_duration = 10):
         print('Going to sleep for {} seconds...'.format(sleep_duration))
 
         cmd_set_mode(0)
@@ -167,4 +172,5 @@ def monitor_air_quality():
 
 
 if __name__ == '__main__':
-    monitor_air_quality()
+    sensor = AirQualitySensor()
+    sensor.monitor_air_quality()
