@@ -143,7 +143,10 @@ def monitor_air_quality():
             time.sleep(reading_period)
 
         with open(readings_file, 'w+') as f:
-            data = json.load(f)
+            try:
+                data = json.load(f)
+            except (ValueError, json.decoder.JSONDecodeError):
+                data = []
 
             if len(data) > maximum_file_length:
                 data.pop(0)
