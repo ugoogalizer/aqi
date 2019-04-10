@@ -122,31 +122,41 @@ def cmd_set_id(id):
 
 
 def monitor_air_quality():
+    number_of_readings = 15
+    reading_period = 2
+    readings_file = '/var/www/html/aqi.json'
+    maximum_file_length = 100
+    sleep_duration = 60
+
     while True:
         cmd_set_sleep(0)
         cmd_set_mode(1)
 
-        for t in range(15):
+        for _ in range(number_of_readings):
             values = cmd_query_data()
-            if values is not None:
+
+            if values:
                 print('PM2.5: ', values[0], ', PM10: ', values[1])
-                time.sleep(2)
+            else:
+                print('PM2.5: - , PM10: - ')
 
-        with open('/var/www/html/aqi.json') as json_data:
-            data = json.load(json_data)
+            time.sleep(reading_period)
 
-        if len(data) > 100:
+        with open(readings_file) as f:
+            data = json.load(f)
+
+        if len(data) > maximum_file_length:
             data.pop(0)
 
-        data.append({'pm25': values[0], 'pm10': values[1], 'time': time.strftime('%d.%m.%Y %H:%M:%S')})
+        data.append({'PM2.5': values[0], 'PM10': values[1], 'time': time.strftime('%d.%m.%Y %H:%M:%S')})
 
-        with open('/var/www/html/aqi.json', 'w') as outfile:
-            json.dump(data, outfile)
+        with open(readings_file, 'w') as f:
+            json.dump(data, f)
 
-        print('Going to sleep for 1 min...')
+        print('Going to sleep for {} seconds...'.format(sleep_duration))
         cmd_set_mode(0)
         cmd_set_sleep()
-        time.sleep(60)
+        time.sleep(sleep_duration)
 
 
 if __name__ == '__main__':
