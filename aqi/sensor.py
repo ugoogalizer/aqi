@@ -16,6 +16,7 @@ class AirQualitySensor:
 
     def __enter__(self):
         self.wake()
+        return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.sleep()
@@ -35,5 +36,5 @@ class AirQualitySensor:
 
 
 if __name__ == '__main__':
-    sensor = AirQualitySensor()
-    sensor.monitor()
+    with AirQualitySensor() as sensor:
+        sensor.monitor()
