@@ -1,9 +1,37 @@
 #!/usr/bin/python
 # coding=utf-8
 from __future__ import print_function
+from bisect import bisect
 import time
 
 from aqi.instruction_set import SensorInstructionSet
+
+# UK AQI lower boundaries (keys) for concentrations of PM10 and PM2.5 in micrograms per metre cubed (values)
+pm10_aqi_lower_boundaries = {
+    1: 0,
+    2: 17,
+    3: 34,
+    4: 51,
+    5: 59,
+    6: 67,
+    7: 76,
+    8: 84,
+    9: 92,
+    10: 101
+}
+
+pm25_aqi_lower_boundaries = {
+    1: 0,
+    2: 12,
+    3: 24,
+    4: 36,
+    5: 42,
+    6: 48,
+    7: 54,
+    8: 59,
+    9: 65,
+    10: 71
+}
 
 
 class AirQualitySensor:
@@ -23,8 +51,16 @@ class AirQualitySensor:
 
     def monitor(self, reading_spacing = 2):
         while True:
-            print(self.instruction_set.cmd_query_data())
+            reading = self.instruction_set.cmd_query_data()
+            reading['PM10 AQI'] = self.calculate_aqi(reading['PM10'], pm10_aqi_lower_boundaries)
+            reading['PM2.5 AQI'] = self.calculate_aqi(reading['PM2.5'], pm25_aqi_lower_boundaries)
+            print(reading)
             time.sleep(reading_spacing)
+
+    @staticmethod
+    def calculate_aqi(concentration, boundaries):
+        aqi_index = bisect(boundaries.values(), concentration)
+        return list(boundaries.keys())[aqi_index]
 
     def wake(self):
         self.instruction_set.cmd_set_sleep(0)
