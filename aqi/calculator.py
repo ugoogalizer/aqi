@@ -43,7 +43,7 @@ class AQICalculator:
     })
 
     def calculate_aqis_and_bands(self, reading):
-        return reading.extend({
+        return reading.update({
             'PM10 AQI': self._calculate_aqi(reading['PM10'], self.pm10_aqi_lower_boundaries),
             'PM2.5 AQI': self._calculate_aqi(reading['PM2.5'], self.pm25_aqi_lower_boundaries),
             'Overall AQI': max(reading['PM10 AQI'], reading['PM2.5 AQI']),
