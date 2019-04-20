@@ -1,12 +1,14 @@
 from bisect import bisect
+from collections import OrderedDict
 
 
 class AQICalculator:
     """ A calculator for UK AQI values and bands. These are defined by their lower boundaries (keys) for
     concentrations of PM10 and PM2.5 in micrograms per metre cubed (values) below.
     """
-    # https://uk-air.defra.gov.uk/air-pollution/daqi?view=more-info&pollutant=pm25#pollutant
-    pm10_aqi_lower_boundaries = {
+
+    # https://uk-air.defra.gov.uk/air-pollution/daqi?view=more-info&pollutant=pm10#pollutant
+    pm10_aqi_lower_boundaries = OrderedDict({
         1: 0,
         2: 17,
         3: 34,
@@ -17,10 +19,10 @@ class AQICalculator:
         8: 84,
         9: 92,
         10: 101
-    }
+    })
 
-    # https://uk-air.defra.gov.uk/air-pollution/daqi?view=more-info&pollutant=pm10#pollutant
-    pm25_aqi_lower_boundaries = {
+    # https://uk-air.defra.gov.uk/air-pollution/daqi?view=more-info&pollutant=pm25#pollutant
+    pm25_aqi_lower_boundaries = OrderedDict({
         1: 0,
         2: 12,
         3: 24,
@@ -31,14 +33,14 @@ class AQICalculator:
         8: 59,
         9: 65,
         10: 71
-    }
+    })
 
-    aqi_bands_boundaries = {
-        1: 'low',
-        4: 'moderate',
-        7: 'high',
-        10: 'very high'
-    }
+    aqi_bands_boundaries = OrderedDict({
+        'low': 1,
+        'moderate': 4,
+        'high': 7,
+        'very high': 10
+    })
 
     def calculate_aqis_and_bands(self, reading):
         return reading.extend({
@@ -50,10 +52,17 @@ class AQICalculator:
 
     @staticmethod
     def _calculate_aqi(concentration, aqi_boundaries):
-        aqi_index = bisect(aqi_boundaries.values(), concentration)
-        return list(aqi_boundaries.keys())[aqi_index]
+        for aqi_value, lower_boundary in reversed(aqi_boundaries.items()):
+            if concentration < lower_boundary:
+                continue
+            return aqi_value
+        raise ValueError('Concentration value {} out of possible range'.format(concentration))
 
     @staticmethod
     def _calculate_aqi_band(aqi, aqi_bands_boundaries):
-        aqi_band_index = bisect(aqi_bands_boundaries.values(), aqi)
-        return list(aqi_bands_boundaries.keys())[aqi_band_index]
+        for aqi_band, lower_boundary in reversed(aqi_bands_boundaries.items()):
+            if aqi < lower_boundary:
+                continue
+            return aqi_band
+
+        raise ValueError('AQI value {} out of possible range of AQIs'.format(aqi))
