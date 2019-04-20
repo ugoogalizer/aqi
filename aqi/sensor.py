@@ -21,11 +21,12 @@ class AirQualitySensor:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.sleep()
 
-    def monitor(self, monitoring_duration = 600, reading_spacing = 3300):
-        """ Monitor the air quality for a given duration, repeating this at a given spacing in time.
+    def monitor(self, measurement_period=1, monitoring_duration=600, sleep_time=3300):
+        """ Monitor the air quality for a given duration, repeating this indefinitely after a given sleep time.
 
-        :param monitoring_duration: duration in seconds
-        :param int reading_spacing: spacing in seconds
+        :param int measurement_period: measurement period in seconds
+        :param int monitoring_duration: duration in seconds
+        :param int sleep_time: sleep time in seconds
         :return None:
         """
         start_time = datetime.datetime.now()
@@ -37,9 +38,10 @@ class AirQualitySensor:
             if time_spent_monitoring < monitoring_duration:
                 reading = self.calculator.calculate_aqis_and_bands(self.instruction_set.cmd_query_data())
                 print(reading)
+                time.sleep(measurement_period)
 
             else:
-                time.sleep(reading_spacing)
+                time.sleep(sleep_time)
 
     def wake(self):
         self.instruction_set.cmd_set_sleep(0)
