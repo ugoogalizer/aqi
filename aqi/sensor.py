@@ -10,7 +10,21 @@ from aqi.instruction_set import SensorInstructionSet
 
 class AirQualitySensor:
 
-    def __init__(self):
+    modes = {
+        'continuous': {
+            'measurement_period': 1,
+            'monitoring_duration': 10,
+            'sleep_time': 0
+        },
+        'hourly': {
+            'measurement_period': 1,
+            'monitoring_duration': 600,
+            'sleep_time': 3300
+        }
+    }
+
+    def __init__(self, mode='hourly'):
+        self.mode = self.modes[mode]
         self.instruction_set = SensorInstructionSet()
         self.calculator = AQICalculator()
 
@@ -21,27 +35,35 @@ class AirQualitySensor:
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.sleep()
 
-    def monitor(self, measurement_period=1, monitoring_duration=600, sleep_time=3300):
-        """ Monitor the air quality for a given duration, repeating this indefinitely after a given sleep time.
+    def monitor(self):
+        """ Monitor the air quality for a given duration, repeating this in an indefinite cycle with a given sleep
+        time in between cycles
 
-        :param int measurement_period: measurement period in seconds
-        :param int monitoring_duration: duration in seconds
-        :param int sleep_time: sleep time in seconds
         :return None:
         """
         start_time = datetime.datetime.now()
-        monitoring_duration = datetime.timedelta(seconds=monitoring_duration)
+        monitoring_duration = datetime.timedelta(seconds=self.mode['monitoring_duration'])
 
-        while True:
-            time_spent_monitoring = datetime.datetime.now() - start_time
-
-            if time_spent_monitoring < monitoring_duration:
-                reading = self.calculator.calculate_aqis_and_bands(self.instruction_set.cmd_query_data())
-                print(reading)
-                time.sleep(measurement_period)
+        with self:
+            if self.mode['sleep_time'] == 0:
+                while True:
+                    reading = self.calculator.calculate_aqis_and_bands(self.instruction_set.cmd_query_data())
+                    print(reading)
+                    time.sleep(self.mode['measurement_period'])
 
             else:
-                time.sleep(sleep_time)
+                while True:
+                    time_spent_monitoring = datetime.datetime.now() - start_time
+
+                    if time_spent_monitoring < monitoring_duration:
+                        reading = self.calculator.calculate_aqis_and_bands(self.instruction_set.cmd_query_data())
+                        print(reading)
+                        time.sleep(self.mode['measurement_period'])
+
+                    else:
+                        self.sleep()
+                        time.sleep(self.mode['sleep_time'])
+                        self.wake()
 
     def wake(self):
         self.instruction_set.cmd_set_sleep(0)
@@ -53,5 +75,4 @@ class AirQualitySensor:
 
 
 if __name__ == '__main__':
-    with AirQualitySensor() as sensor:
-        sensor.monitor()
+    AirQualitySensor().monitor()
