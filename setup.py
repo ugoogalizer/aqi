@@ -9,6 +9,11 @@ setup(
     install_requires=[
         'pyserial'
     ],
+    extras_require={
+        'development': [
+            'pytest'
+        ]
+    },
     license='',
     name='aqi',
     packages=find_packages(),
