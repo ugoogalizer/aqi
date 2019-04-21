@@ -10,24 +10,50 @@ from aqi.instruction_set import SensorInstructionSet
 
 class SensorMode:
 
-    def __init__(self, measurement_period, monitoring_duration, sleep_time):
+    def __init__(self, name, measurement_period, monitoring_duration, sleep_time):
         """ Define a mode for an AirQualitySensor
 
+        :param str name:
         :param float measurement_period: inverse of measurement frequency; measured in seconds
         :param float|None monitoring_duration: duration to monitor for in seconds
         :param float sleep_time: duration to sleep for between monitoring sessions; measured in seconds
         """
+        self.name = name
         self.measurement_period = measurement_period
         self.monitoring_duration = None if monitoring_duration is None else datetime.timedelta(seconds=monitoring_duration)
         self.sleep_time = sleep_time
+
+    def __repr__(self):
+        return '<{}(name={!r}, measurement_period={!r}, monitoring_duration={!r}, sleep_time={!r})'.format(
+            self.__class__.__name__,
+            self.name,
+            self.measurement_period,
+            self.monitoring_duration,
+            self.sleep_time
+        )
 
 
 class AirQualitySensor:
 
     modes = {
-        'continuous': SensorMode(measurement_period=1, monitoring_duration=None, sleep_time=0),
-        'hourly_five_minute_measurement': SensorMode(measurement_period=1, monitoring_duration=600, sleep_time=3300),
-        'hourly': SensorMode(measurement_period=1, monitoring_duration=1, sleep_time=3599)
+        'continuous': SensorMode(
+            name='continuous',
+            measurement_period=1,
+            monitoring_duration=None,
+            sleep_time=0
+        ),
+        'hourly_five_minute_measurement': SensorMode(
+            name='hourly_five_minute_measurement',
+            measurement_period=1,
+            monitoring_duration=600,
+            sleep_time=3300
+        ),
+        'hourly': SensorMode(
+            name='hourly',
+            measurement_period=1,
+            monitoring_duration=1,
+            sleep_time=3599
+        )
     }
 
     def __init__(self, mode='hourly_five_minute_measurement'):
@@ -48,6 +74,8 @@ class AirQualitySensor:
 
         :return None:
         """
+        print('Monitoring with {}'.format(self.mode))
+
         start_time = datetime.datetime.now()
 
         with self:
