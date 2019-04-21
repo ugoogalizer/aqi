@@ -45,7 +45,7 @@ class AirQualitySensor:
         'hourly_five_minute_measurement': SensorMode(
             name='hourly_five_minute_measurement',
             measurement_period=1,
-            monitoring_duration=600,
+            monitoring_duration=300,
             sleep_time=3300
         ),
         'hourly': SensorMode(
