@@ -17,7 +17,7 @@ class TestAirQualitySensor:
         """
         sensor = AirQualitySensor(mock=True)
         sensor.readings = [{'readings': 'here'}, {'another_one': 'there'}]
-        sensor.save_to_file(self.test_filename)
+        sensor.save_readings_to_file(self.test_filename)
 
         with open(self.test_filename, 'r') as f:
             data = json.load(f)
@@ -39,7 +39,7 @@ class TestAirQualitySensor:
 
         sensor = AirQualitySensor(mock = True)
         sensor.readings = [{'more_readings': 'here'}, {'another_one': 'there'}]
-        sensor.save_to_file(self.test_filename)
+        sensor.save_readings_to_file(self.test_filename)
         
         with open(self.test_filename, 'r') as f:
             data = json.load(f)

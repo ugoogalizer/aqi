@@ -10,6 +10,9 @@ from aqi.calculator import AQICalculator
 from aqi.instruction_set import SensorInstructionSet
 
 
+READINGS_FILE = 'readings.json'
+
+
 class SensorMode:
 
     def __init__(self, name, measurement_period, monitoring_duration, sleep_time):
@@ -70,6 +73,7 @@ class AirQualitySensor:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self._sleep()
+        self.save_readings_to_file(READINGS_FILE)
 
     def monitor(self):
         """ Monitor the air quality according to the mode selected.
@@ -111,7 +115,7 @@ class AirQualitySensor:
         print(reading)
         time.sleep(self.mode.measurement_period)
 
-    def save_to_file(self, path):
+    def save_readings_to_file(self, path):
         """ Save readings to a file, appending to any readings already in the file.
 
         :param str path:
