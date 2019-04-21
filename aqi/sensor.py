@@ -59,9 +59,9 @@ class AirQualitySensor:
         )
     }
 
-    def __init__(self, mode='hourly_five_minute_measurement', mock = False):
+    def __init__(self, mode='hourly_five_minute_measurement', mock=False):
         self.mode = self.modes[mode]
-        self.instruction_set = SensorInstructionSet(mock = mock)
+        self.instruction_set = SensorInstructionSet(mock=mock)
         self.calculator = AQICalculator()
         self.readings = []
 
