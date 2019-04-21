@@ -73,7 +73,7 @@ class AirQualitySensor:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self._sleep()
-        self.save_readings_to_file(READINGS_FILE)
+        # self.save_readings_to_file(READINGS_FILE)
 
     def monitor(self):
         """ Monitor the air quality according to the mode selected.
