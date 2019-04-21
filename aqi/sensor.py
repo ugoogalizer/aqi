@@ -13,12 +13,12 @@ class SensorMode:
     def __init__(self, measurement_period, monitoring_duration, sleep_time):
         """ Define a mode for an AirQualitySensor
 
-        :param int measurement_period: inverse of measurement frequency; measured in seconds
-        :param int|None monitoring_duration: duration to monitor for in seconds
-        :param int sleep_time: duration to sleep for between monitoring sessions; measured in seconds
+        :param float measurement_period: inverse of measurement frequency; measured in seconds
+        :param float|None monitoring_duration: duration to monitor for in seconds
+        :param float sleep_time: duration to sleep for between monitoring sessions; measured in seconds
         """
         self.measurement_period = measurement_period
-        self.monitoring_duration = datetime.timedelta(seconds=monitoring_duration)
+        self.monitoring_duration = None if monitoring_duration is None else datetime.timedelta(seconds=monitoring_duration)
         self.sleep_time = sleep_time
 
 
@@ -51,23 +51,27 @@ class AirQualitySensor:
         start_time = datetime.datetime.now()
 
         with self:
-            if self.mode['sleep_time'] == 0:
+            if self.mode.sleep_time == 0:
                 while True:
-                    self._take_measurement()
+                    self.take_measurement()
 
             else:
                 while True:
                     time_spent_monitoring = datetime.datetime.now() - start_time
 
-                    if time_spent_monitoring < self.mode.monitoring_duration:
-                        self._take_measurement()
+                    if self.mode.monitoring_duration:
+                        if time_spent_monitoring < self.mode.monitoring_duration:
+                            self.take_measurement()
+
+                        else:
+                            self._sleep()
+                            time.sleep(self.mode.sleep_time)
+                            self._wake()
 
                     else:
-                        self._sleep()
-                        time.sleep(self.mode.sleep_time)
-                        self._wake()
+                        self.take_measurement()
 
-    def _take_measurement(self):
+    def take_measurement(self):
         """ Take a measurement at the period set in the mode.
 
         :return None:
