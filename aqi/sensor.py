@@ -24,7 +24,7 @@ class SensorMode:
         self.sleep_time = sleep_time
 
     def __repr__(self):
-        return '<{}(name={!r}, measurement_period={!r}, monitoring_duration={!r}, sleep_time={!r})'.format(
+        return '<{}(name={!r}, measurement_period={!r}, monitoring_duration={!r}, sleep_time={!r})>'.format(
             self.__class__.__name__,
             self.name,
             self.measurement_period,
@@ -75,7 +75,7 @@ class AirQualitySensor:
 
         :return None:
         """
-        print('Monitoring with {}'.format(self.mode))
+        print(self.mode)
 
         start_time = datetime.datetime.now()
 
