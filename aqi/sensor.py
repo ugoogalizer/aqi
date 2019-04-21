@@ -60,6 +60,7 @@ class AirQualitySensor:
         self.mode = self.modes[mode]
         self.instruction_set = SensorInstructionSet()
         self.calculator = AQICalculator()
+        self.readings = []
 
     def __enter__(self):
         self._wake()
@@ -100,11 +101,12 @@ class AirQualitySensor:
                         self.take_measurement()
 
     def take_measurement(self):
-        """ Take a measurement at the period set in the mode.
+        """ Take a measurement at each period (set in the sensor mode).
 
         :return None:
         """
         reading = self.calculator.calculate_aqis_and_bands(self.instruction_set.cmd_query_data())
+        self.readings.append(reading)
         print(reading)
         time.sleep(self.mode.measurement_period)
 
