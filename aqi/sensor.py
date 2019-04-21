@@ -3,6 +3,7 @@
 from __future__ import print_function
 import datetime
 import json
+import os
 import time
 
 from aqi.calculator import AQICalculator
@@ -110,13 +111,17 @@ class AirQualitySensor:
         print(reading)
         time.sleep(self.mode.measurement_period)
 
-    def save_to_file(self, filename):
+    def save_to_file(self, path):
         """ Save readings to a file, appending to any readings already in the file.
 
-        :param str filename:
+        :param str path:
         :return None:
         """
-        with open(filename, 'r+') as f:
+        if not os.path.exists(path):
+            with open(path, 'x'):
+                pass
+
+        with open(path, 'r') as f:
             try:
                 existing_data = json.load(f)
             except:
@@ -124,7 +129,7 @@ class AirQualitySensor:
 
         all_data = existing_data + self.readings
 
-        with open(filename, 'w') as f:
+        with open(path, 'w') as f:
             json.dump(all_data, f)
 
     def _wake(self):
