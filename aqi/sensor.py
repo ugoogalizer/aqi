@@ -2,6 +2,7 @@
 # coding=utf-8
 from __future__ import print_function
 import datetime
+import json
 import time
 
 from aqi.calculator import AQICalculator
@@ -42,23 +43,23 @@ class AirQualitySensor:
             monitoring_duration=None,
             sleep_time=0
         ),
-        'hourly_five_minute_measurement': SensorMode(
-            name='hourly_five_minute_measurement',
-            measurement_period=1,
-            monitoring_duration=300,
-            sleep_time=3300
-        ),
         'hourly': SensorMode(
             name='hourly',
             measurement_period=1,
             monitoring_duration=1,
             sleep_time=3599
+        ),
+        'hourly_five_minute_measurement': SensorMode(
+            name='hourly_five_minute_measurement',
+            measurement_period=1,
+            monitoring_duration=300,
+            sleep_time=3300
         )
     }
 
-    def __init__(self, mode='hourly_five_minute_measurement'):
+    def __init__(self, mode='hourly_five_minute_measurement', mock = False):
         self.mode = self.modes[mode]
-        self.instruction_set = SensorInstructionSet()
+        self.instruction_set = SensorInstructionSet(mock = mock)
         self.calculator = AQICalculator()
         self.readings = []
 
@@ -70,8 +71,7 @@ class AirQualitySensor:
         self._sleep()
 
     def monitor(self):
-        """ Monitor the air quality for a given duration, repeating this in an indefinite cycle with a given sleep
-        time in between cycles
+        """ Monitor the air quality according to the mode selected.
 
         :return None:
         """
@@ -82,7 +82,7 @@ class AirQualitySensor:
         with self:
             if self.mode.sleep_time == 0:
                 while True:
-                    self.take_measurement()
+                    self.take_reading()
 
             else:
                 while True:
@@ -90,7 +90,7 @@ class AirQualitySensor:
 
                     if self.mode.monitoring_duration:
                         if time_spent_monitoring < self.mode.monitoring_duration:
-                            self.take_measurement()
+                            self.take_reading()
 
                         else:
                             self._sleep()
@@ -98,10 +98,10 @@ class AirQualitySensor:
                             self._wake()
 
                     else:
-                        self.take_measurement()
+                        self.take_reading()
 
-    def take_measurement(self):
-        """ Take a measurement at each period (set in the sensor mode).
+    def take_reading(self):
+        """ Take a reading of the air quality.
 
         :return None:
         """
@@ -109,6 +109,23 @@ class AirQualitySensor:
         self.readings.append(reading)
         print(reading)
         time.sleep(self.mode.measurement_period)
+
+    def save_to_file(self, filename):
+        """ Save readings to a file, appending to any readings already in the file.
+
+        :param str filename:
+        :return None:
+        """
+        with open(filename, 'r+') as f:
+            try:
+                existing_data = json.load(f)
+            except:
+                existing_data = []
+
+        all_data = existing_data + self.readings
+
+        with open(filename, 'w') as f:
+            json.dump(all_data, f)
 
     def _wake(self):
         """ Wake the sensor.

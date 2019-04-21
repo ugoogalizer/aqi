@@ -20,14 +20,15 @@ class SensorInstructionSet:
 
     data = ''
 
-    def __init__(self):
+    def __init__(self, mock = False):
 
-        self.serial_interface = serial.Serial()
-        self.serial_interface.port = '/dev/ttyUSB0'
-        self.serial_interface.baudrate = 9600
+        if not mock:
+            self.serial_interface = serial.Serial()
+            self.serial_interface.port = '/dev/ttyUSB0'
+            self.serial_interface.baudrate = 9600
 
-        self.serial_interface.open()
-        self.serial_interface.flushInput()
+            self.serial_interface.open()
+            self.serial_interface.flushInput()
 
     def dump(self, data, prefix=''):
         print(prefix + ' '.join(x.encode('hex') for x in data))
