@@ -1,6 +1,7 @@
 api-docs/
 data/
 venv/
+venv-python2
 
 .DS_Store
 *.egg-info/
@@ -12,3 +13,4 @@ venv/
 .coverage
 htmlcov/
 *.log
+*readings.json

@@ -7,7 +7,8 @@ setup(
     author_email='marcuslugg@googlemail.com',
     description='Measure the local air quality index (AQI) based on PM2.5 and PM10 concentrations.',
     install_requires=[
-        'pyserial'
+        'pyserial<4',
+        'seaborn'
     ],
     extras_require={
         'development': [
