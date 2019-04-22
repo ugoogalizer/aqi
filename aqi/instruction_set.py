@@ -97,6 +97,7 @@ class SensorInstructionSet:
         """
         self.serial_interface.write(self.construct_command(self.CMD_SLEEP, [0x1, 0]))
         self.read_response()
+        self.set_mode(0)
 
     def wake(self):
         """ Wake the sensor.
@@ -105,6 +106,7 @@ class SensorInstructionSet:
         """
         self.serial_interface.write(self.construct_command(self.CMD_SLEEP, [0x1, 1]))
         self.read_response()
+        self.set_mode(1)
 
     def set_working_period(self, period):
         self.serial_interface.write(self.construct_command(self.CMD_WORKING_PERIOD, [0x1, period]))

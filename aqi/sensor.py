@@ -14,7 +14,7 @@ READINGS_FILE = 'readings.json'
 class SensorMode:
 
     def __init__(self, name, measurement_period, monitoring_duration, sleep_time):
-        """ Define a mode for an AirQualitySensor
+        """ Define a mode for an AirQualitySensor.
 
         :param str name:
         :param float measurement_period: inverse of measurement frequency; measured in seconds
@@ -66,11 +66,11 @@ class AirQualitySensor:
         self.readings = []
 
     def __enter__(self):
-        self._wake()
+        self.instruction_set.wake()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
-        self._sleep()
+        self.instruction_set.sleep()
         self.save_readings_to_file(READINGS_FILE)
 
     def monitor(self):
@@ -99,9 +99,9 @@ class AirQualitySensor:
                             self.take_reading()
 
                         else:
-                            self._sleep()
+                            self.instruction_set.sleep()
                             time.sleep(self.mode.sleep_time)
-                            self._wake()
+                            self.instruction_set.wake()
 
                     else:
                         self.take_reading()
@@ -135,22 +135,6 @@ class AirQualitySensor:
 
         with open(path, 'w') as f:
             json.dump(all_data, f)
-
-    def _wake(self):
-        """ Wake the sensor.
-
-        :return None:
-        """
-        self.instruction_set.wake()
-        self.instruction_set.set_mode(1)
-
-    def _sleep(self):
-        """ Send the sensor to sleep.
-
-        :return None:
-        """
-        self.instruction_set.set_mode(0)
-        self.instruction_set.sleep()
 
 
 if __name__ == '__main__':
