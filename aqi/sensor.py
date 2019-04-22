@@ -111,7 +111,7 @@ class AirQualitySensor:
 
         :return None:
         """
-        reading = self.calculator.calculate_aqis_and_bands(self.instruction_set.cmd_query_data())
+        reading = self.calculator.calculate_aqis_and_bands(self.instruction_set.query_data())
         self.readings.append(reading)
         print(reading)
         time.sleep(self.mode.measurement_period)
@@ -141,16 +141,16 @@ class AirQualitySensor:
 
         :return None:
         """
-        self.instruction_set.cmd_set_sleep(0)
-        self.instruction_set.cmd_set_mode(1)
+        self.instruction_set.wake()
+        self.instruction_set.set_mode(1)
 
     def _sleep(self):
         """ Send the sensor to sleep.
 
         :return None:
         """
-        self.instruction_set.cmd_set_mode(0)
-        self.instruction_set.cmd_set_sleep()
+        self.instruction_set.set_mode(0)
+        self.instruction_set.sleep()
 
 
 if __name__ == '__main__':

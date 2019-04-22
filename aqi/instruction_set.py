@@ -20,17 +20,17 @@ class SensorInstructionSet:
 
     data = ''
 
-    def __init__(self, mock = False):
+    def __init__(self, mock=False):
 
         if not mock:
             self.serial_interface = serial.Serial()
             self.serial_interface.port = '/dev/ttyUSB0'
             self.serial_interface.baudrate = 9600
-
             self.serial_interface.open()
             self.serial_interface.flushInput()
 
-    def dump(self, data, prefix=''):
+    @staticmethod
+    def dump(data, prefix=''):
         print(prefix + ' '.join(x.encode('hex') for x in data))
 
     def construct_command(self, command, data=None):
@@ -46,17 +46,19 @@ class SensorInstructionSet:
             self.dump(ret, '> ')
         return ret
 
-    def process_data(self, data):
+    @staticmethod
+    def process_data(data):
         r = struct.unpack('<HHxxBB', data[2:])
         pm25 = r[0] / 10.0
         pm10 = r[1] / 10.0
         checksum = sum(ord(v) for v in data[2:8]) % 256
         return {'time': time.strftime('%d.%m.%Y %H:%M:%S'), 'PM2.5': pm25, 'PM10': pm10}
-        #print('PM 2.5: {} μg/m^3  PM 10: {} μg/m^3 CRC={}'.format(pm25, pm10, 'OK' if (checksum==r[2] and r[3]==0xab) else 'NOK'))
+        # print('PM 2.5: {} μg/m^3  PM 10: {} μg/m^3 CRC={}'.format(pm25, pm10, 'OK' if (checksum==r[2] and r[ 3]==0xab) else 'NOK'))
 
-    def process_version(self, d):
-        r = struct.unpack('<BBBHBB', d[3:])
-        checksum = sum(ord(v) for v in d[2:8]) % 256
+    @staticmethod
+    def process_version(data):
+        r = struct.unpack('<BBBHBB', data[3:])
+        checksum = sum(ord(v) for v in data[2:8]) % 256
         print(
             'Y: {}, M: {}, D: {}, ID: {}, CRC={}'
             .format(r[0], r[1], r[2], hex(r[3]), 'OK' if (checksum == r[4] and r[5] == 0xab) else 'NOK')
@@ -75,11 +77,11 @@ class SensorInstructionSet:
 
         return byte + data
 
-    def cmd_set_mode(self, mode=MODE_QUERY):
+    def set_mode(self, mode=MODE_QUERY):
         self.serial_interface.write(self.construct_command(self.CMD_MODE, [0x1, mode]))
         self.read_response()
 
-    def cmd_query_data(self):
+    def query_data(self):
         self.serial_interface.write(self.construct_command(self.CMD_QUERY_DATA))
         d = self.read_response()
 
@@ -88,25 +90,36 @@ class SensorInstructionSet:
 
         return {'time': time.strftime('%Y-%m-%d %H:%M:%S'), 'PM2.5': None, 'PM10': None}
 
-    def cmd_set_sleep(self, sleep=1):
-        if sleep:
-            mode = 0
-        else:
-            mode = 1
+    def sleep(self):
+        """ Send the sensor to sleep.
 
-        self.serial_interface.write(self.construct_command(self.CMD_SLEEP, [0x1, mode]))
+        :return None:
+        """
+        self.serial_interface.write(self.construct_command(self.CMD_SLEEP, [0x1, 0]))
         self.read_response()
 
-    def cmd_set_working_period(self, period):
+    def wake(self):
+        """ Wake the sensor.
+
+        :return None:
+        """
+        self.serial_interface.write(self.construct_command(self.CMD_SLEEP, [0x1, 1]))
+        self.read_response()
+
+    def set_working_period(self, period):
         self.serial_interface.write(self.construct_command(self.CMD_WORKING_PERIOD, [0x1, period]))
         self.read_response()
 
-    def cmd_firmware_ver(self):
-        self.serial_interface.write(self.construct_command(self.CMD_FIRMWARE))
-        d = self.read_response()
-        self.process_version(d)
+    def get_firmware_version(self):
+        """ Get the firmware version and print it.
 
-    def cmd_set_id(self, id_):
+        :return None:
+        """
+        self.serial_interface.write(self.construct_command(self.CMD_FIRMWARE))
+        response = self.read_response()
+        self.process_version(response)
+
+    def set_id(self, id_):
         id_h = (id_ >> 8) % 256
         id_l = id_ % 256
         self.serial_interface.write(self.construct_command(self.CMD_DEVICE_ID, [0] * 10 + [id_l, id_h]))
