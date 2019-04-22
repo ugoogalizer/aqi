@@ -71,7 +71,7 @@ class AirQualitySensor:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self._sleep()
-        # self.save_readings_to_file(READINGS_FILE)
+        self.save_readings_to_file(READINGS_FILE)
 
     def monitor(self):
         """ Monitor the air quality according to the mode selected.
@@ -120,8 +120,7 @@ class AirQualitySensor:
         :return None:
         """
         if not os.path.exists(path):
-            with open(path, 'x'):
-                pass
+            open(path, 'w+').close()
 
         with open(path, 'r') as f:
             try:
