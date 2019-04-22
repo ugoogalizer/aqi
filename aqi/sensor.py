@@ -91,8 +91,8 @@ class AirQualitySensor:
                 while True:
                     time_spent_monitoring = datetime.datetime.now() - start_time
 
-                    if time_spent_monitoring % datetime.timedelta(seconds = 300) == 0:
-                        self.save_readings_to_file(READINGS_FILE)
+                    # if time_spent_monitoring % datetime.timedelta(seconds = 300) == 0:
+                    self.save_readings_to_file(READINGS_FILE)
 
                     if self.mode.monitoring_duration:
                         if time_spent_monitoring < self.mode.monitoring_duration:
