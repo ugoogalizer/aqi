@@ -42,17 +42,20 @@ class AQICalculator:
     })
 
     def calculate_aqis_and_bands(self, reading):
-        pm10_aqi = self._calculate_aqi(reading['PM10'], self.pm10_aqi_lower_boundaries)
+        """ Calculate the AQIs for each pollutant, an overall AQI and an overall AQI band.
+
+        :param OrderedDict reading:
+        :return OrderedDict:
+        """
         pm25_aqi = self._calculate_aqi(reading['PM2.5'], self.pm25_aqi_lower_boundaries)
+        pm10_aqi = self._calculate_aqi(reading['PM10'], self.pm10_aqi_lower_boundaries)
         overall_aqi = max(pm25_aqi, pm10_aqi)
         overall_aqi_band = self._calculate_aqi_band(overall_aqi, self.aqi_bands_boundaries)
 
-        reading.update({
-            'PM10 AQI': pm10_aqi,
-            'PM2.5 AQI': pm25_aqi,
-            'Overall AQI': overall_aqi,
-            'Overall AQI band': overall_aqi_band
-        })
+        reading['PM2.5 AQI'] = pm25_aqi
+        reading['PM10 AQI'] = pm10_aqi
+        reading['Overall AQI'] = overall_aqi
+        reading['Overall AQI band'] = overall_aqi_band
 
         return reading
 

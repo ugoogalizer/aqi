@@ -1,5 +1,5 @@
 # coding=utf-8
-
+from collections import OrderedDict
 import serial
 import struct
 import time
@@ -36,8 +36,10 @@ class SensorInstructionSet:
     def construct_command(self, command, data=None):
         data = data or []
         assert len(data) <= 12
+
         data += [0] * (12 - len(data))
         checksum = (sum(data) + command - 2) % 256
+
         ret = '\xaa\xb4' + chr(command)
         ret += ''.join(chr(x) for x in data)
         ret += '\xff\xff' + chr(checksum) + '\xab'
@@ -49,10 +51,14 @@ class SensorInstructionSet:
     @staticmethod
     def process_data(data):
         r = struct.unpack('<HHxxBB', data[2:])
-        pm25 = r[0] / 10.0
-        pm10 = r[1] / 10.0
-        checksum = sum(ord(v) for v in data[2:8]) % 256
-        return {'time': time.strftime('%d.%m.%Y %H:%M:%S'), 'PM2.5': pm25, 'PM10': pm10}
+
+        reading = OrderedDict()
+        reading['time'] = time.strftime('%d.%m.%Y %H:%M:%S')
+        reading['PM2.5'] = r[0] / 10.0
+        reading['PM10'] = r[1] / 10.0
+
+        return reading
+        # checksum = sum(ord(v) for v in data[2:8]) % 256
         # print('PM 2.5: {} μg/m^3  PM 10: {} μg/m^3 CRC={}'.format(pm25, pm10, 'OK' if (checksum==r[2] and r[ 3]==0xab) else 'NOK'))
 
     @staticmethod
@@ -83,10 +89,10 @@ class SensorInstructionSet:
 
     def query_data(self):
         self.serial_interface.write(self.construct_command(self.CMD_QUERY_DATA))
-        d = self.read_response()
+        response = self.read_response()
 
-        if d[1] == '\xc0':
-            return self.process_data(d)
+        if response[1] == '\xc0':
+            return self.process_data(response)
 
         return {'time': time.strftime('%Y-%m-%d %H:%M:%S'), 'PM2.5': None, 'PM10': None}
 
