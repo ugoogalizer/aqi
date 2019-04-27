@@ -3,7 +3,8 @@ import datetime
 
 class MeasurementMode:
 
-    def __init__(self, name, measurement_period, monitoring_duration, sleep_time, aggregation=''):
+    def __init__(self, name, measurement_period, monitoring_duration, sleep_time, aggregation='',
+                 night_monitoring=False):
         """ Define a measurement mode for an AirQualitySensor.
 
         :param str name:
@@ -11,6 +12,7 @@ class MeasurementMode:
         :param float|None monitoring_duration: duration to monitor for in seconds
         :param float sleep_time: duration to sleep for between monitoring sessions; measured in seconds
         :param str aggregation: name of aggregation to carry out at monitoring period end
+        :param bool night_monitoring: monitoring does not run at night if False
         """
         self.name = name
         self.measurement_period = measurement_period
@@ -19,18 +21,20 @@ class MeasurementMode:
         )
         self.sleep_time = sleep_time
         self.aggregation = aggregation
+        self.night_monitoring = night_monitoring
 
     def __repr__(self):
         return (
             '<{}(name={!r}, measurement_period={!r}, monitoring_duration={!r}, sleep_time={!r}, '
-            'aggregation={!r})>'
+            'aggregation={!r}, night_monitoring={!r})>'
             .format(
                 self.__class__.__name__,
                 self.name,
                 self.measurement_period,
                 self.monitoring_duration,
                 self.sleep_time,
-                self.aggregation
+                self.aggregation,
+                self.night_monitoring
             )
         )
 

@@ -42,26 +42,59 @@ class AirQualitySensor:
 
         with self:
             if self.mode.sleep_time == 0:
+
                 while True:
-                    self.take_reading()
 
-            else:
-                while True:
-                    time_spent_monitoring = datetime.datetime.now() - start_time
+                    if not self.mode.night_monitoring:
 
-                    if self.mode.monitoring_duration:
-                        if time_spent_monitoring < self.mode.monitoring_duration:
-                            self.take_reading()
+                        if self.is_night():
+                            continue
 
-                        else:
-                            self.aggregate()
-                            self.save_readings_to_file(READINGS_FILE)
-                            self.instruction_set.sleep()
-                            time.sleep(self.mode.sleep_time)
-                            self.instruction_set.wake()
+                        self.take_reading()
 
                     else:
                         self.take_reading()
+
+            else:
+                while True:
+
+                    if not self.mode.night_monitoring:
+
+                        if self.is_night():
+                            continue
+
+                        time_spent_monitoring = datetime.datetime.now() - start_time
+
+                        if self.mode.monitoring_duration:
+                            if time_spent_monitoring < self.mode.monitoring_duration:
+                                self.take_reading()
+
+                            else:
+                                self.aggregate()
+                                self.save_readings_to_file(READINGS_FILE)
+                                self.instruction_set.sleep()
+                                time.sleep(self.mode.sleep_time)
+                                self.instruction_set.wake()
+
+                        else:
+                            self.take_reading()
+
+                    else:
+                        time_spent_monitoring = datetime.datetime.now() - start_time
+
+                        if self.mode.monitoring_duration:
+                            if time_spent_monitoring < self.mode.monitoring_duration:
+                                self.take_reading()
+
+                            else:
+                                self.aggregate()
+                                self.save_readings_to_file(READINGS_FILE)
+                                self.instruction_set.sleep()
+                                time.sleep(self.mode.sleep_time)
+                                self.instruction_set.wake()
+
+                        else:
+                            self.take_reading()
 
     def take_reading(self):
         """ Take a reading of the air quality.
@@ -85,6 +118,16 @@ class AirQualitySensor:
             }
 
             self.readings = [self.calculator.calculate_aqis_and_bands(raw_average_reading)]
+
+    def is_night(self):
+        """ Is it night-time?
+
+        :return bool:
+        """
+        now = datetime.datetime.now().time()
+        night_start = datetime.time(hour=21)
+        night_end = datetime.time(hour=9, minute=30)
+        return now >= night_start and now < night_end
 
     def save_readings_to_file(self, path):
         """ Save readings to a file, appending to any readings already in the file.
