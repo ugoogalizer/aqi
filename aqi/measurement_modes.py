@@ -46,6 +46,12 @@ modes = {
         monitoring_duration=None,
         sleep_time=0
     ),
+    'ten_second_alternation': MeasurementMode(
+        name = 'ten_second_alternation',
+        measurement_period=1,
+        monitoring_duration=10,
+        sleep_time=10
+    ),
     'hourly': MeasurementMode(
         name='hourly',
         measurement_period=1,

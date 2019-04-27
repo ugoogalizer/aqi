@@ -156,4 +156,4 @@ class AirQualitySensor:
 
 
 if __name__ == '__main__':
-    AirQualitySensor().monitor()
+    AirQualitySensor(mode='ten_second_alternation').monitor()
