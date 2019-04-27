@@ -25,7 +25,9 @@ class SensorMode:
         """
         self.name = name
         self.measurement_period = measurement_period
-        self.monitoring_duration = None if monitoring_duration is None else datetime.timedelta(seconds=monitoring_duration)
+        self.monitoring_duration = None if monitoring_duration is None else datetime.timedelta(
+            seconds=monitoring_duration
+        )
         self.sleep_time = sleep_time
         self.aggregation = aggregation
 
@@ -60,7 +62,7 @@ class AirQualitySensor:
             sleep_time=3599
         ),
         'hourly_five_minute_average': SensorMode(
-            name='hourly_five_minute_measurement',
+            name='hourly_five_minute_average',
             measurement_period=1,
             monitoring_duration=300,
             sleep_time=3300,
@@ -68,7 +70,7 @@ class AirQualitySensor:
         )
     }
 
-    def __init__(self, mode='hourly_five_minute_measurement', mock=False):
+    def __init__(self, mode='hourly_five_minute_average', mock=False):
         self.mode = self.modes[mode]
         self.instruction_set = SensorInstructionSet(mock=mock)
         self.calculator = AQICalculator()
@@ -161,4 +163,4 @@ class AirQualitySensor:
 
 
 if __name__ == '__main__':
-    AirQualitySensor(mode='hourly_five_minute_measurement').monitor()
+    AirQualitySensor().monitor()
