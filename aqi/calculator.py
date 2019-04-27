@@ -70,7 +70,7 @@ class AQICalculator:
             if concentration < lower_boundary:
                 continue
             return aqi_value
-        raise ValueError('Concentration value {} out of possible range'.format(concentration))
+        # raise ValueError('Concentration value {} out of possible range'.format(concentration))
 
     @staticmethod
     def _calculate_aqi_band(aqi, aqi_bands_boundaries):
@@ -79,4 +79,4 @@ class AQICalculator:
                 continue
             return aqi_band
 
-        raise ValueError('AQI value {} out of possible range of AQIs'.format(aqi))
+        # raise ValueError('AQI value {} out of possible range of AQIs'.format(aqi))
