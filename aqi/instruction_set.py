@@ -101,18 +101,20 @@ class SensorInstructionSet:
 
         :return None:
         """
-        self.serial_interface.write(self.construct_command(self.CMD_SLEEP, [0x1, 0]))
+        mode = 0
+        self.set_mode(mode)
+        self.serial_interface.write(self.construct_command(self.CMD_SLEEP, [0x1, mode]))
         self.read_response()
-        self.set_mode(0)
 
     def wake(self):
         """ Wake the sensor.
 
         :return None:
         """
-        self.serial_interface.write(self.construct_command(self.CMD_SLEEP, [0x1, 1]))
+        mode = 1
+        self.serial_interface.write(self.construct_command(self.CMD_SLEEP, [0x1, mode]))
         self.read_response()
-        self.set_mode(1)
+        self.set_mode(mode)
 
     def set_working_period(self, period):
         self.serial_interface.write(self.construct_command(self.CMD_WORKING_PERIOD, [0x1, period]))
