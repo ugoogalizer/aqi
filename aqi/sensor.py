@@ -1,7 +1,9 @@
 from __future__ import print_function
 import datetime
 import json
+import logging
 import os
+import sys
 import time
 
 from aqi.calculator import AQICalculator
@@ -10,12 +12,15 @@ from aqi import measurement_modes
 from aqi.reading import Reading
 
 
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
+
 READINGS_FILE = 'readings.json'
 
 
 class AirQualitySensor:
 
     modes = measurement_modes.modes
+    logger = logging.getLogger(__name__)
 
     def __init__(self, mode='hourly_five_minute_average', mock=False):
         self.mode = self.modes[mode]
@@ -24,10 +29,12 @@ class AirQualitySensor:
         self.readings = []
 
     def __enter__(self):
+        self.logger.debug('Entering sensor context.')
         self.instruction_set.wake()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        self.logger.debug('Exiting sensor context.')
         self.instruction_set.sleep()
         self.save_readings_to_file(READINGS_FILE)
 
@@ -44,6 +51,7 @@ class AirQualitySensor:
             if self.mode.sleep_time == 0:
 
                 while True:
+                    self.logger.debug('Starting continuous infinite loop.')
 
                     if not self.mode.night_monitoring:
 
@@ -56,7 +64,9 @@ class AirQualitySensor:
                         self.take_reading()
 
             else:
+
                 while True:
+                    self.logger.debug('Starting non-continuous infinite loop.')
 
                     if not self.mode.night_monitoring:
 
@@ -80,6 +90,8 @@ class AirQualitySensor:
         :param datetime.datetime start_time:
         :return datetime.datetime:
         """
+        self.logger.debug('Carrying out one monitoring cycle.')
+
         time_spent_monitoring = datetime.datetime.now() - start_time
 
         if time_spent_monitoring < self.mode.monitoring_duration:
@@ -100,6 +112,7 @@ class AirQualitySensor:
 
         :return None:
         """
+        self.logger.debug('Taking a reading.')
         reading = self.calculator.calculate_aqis_and_bands(self.instruction_set.query_data())
         self.readings.append(reading)
         print(reading.to_dict())
@@ -110,6 +123,8 @@ class AirQualitySensor:
 
         :return None:
         """
+        self.logger.debug('Aggregating readings.')
+
         if not self.mode.aggregation:
             return
 
@@ -139,17 +154,21 @@ class AirQualitySensor:
         :return None:
         """
         if not os.path.exists(path):
+            self.logger.debug('File at %s not found; creating file.', path)
             open(path, 'w+').close()
 
         with open(path, 'r') as f:
             try:
+                self.logger.debug('Opening file at %s.', path)
                 existing_data = [Reading.from_dict(reading) for reading in json.load(f)]
             except:
+                self.logger.debug('Data in file is corrupt; resetting to empty list.')
                 existing_data = []
 
         all_data = existing_data + self.readings
 
         with open(path, 'w') as f:
+            self.logger.debug('Writing file to %s', path)
             json.dump([reading.to_dict() for reading in all_data], f)
 
         self.readings = []
