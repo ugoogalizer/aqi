@@ -70,11 +70,12 @@ class AirQualitySensor:
                                 self.take_reading()
 
                             else:
-                                self.aggregate()
+                                self.aggregate_readings()
                                 self.save_readings_to_file(READINGS_FILE)
                                 self.instruction_set.sleep()
                                 time.sleep(self.mode.sleep_time)
                                 self.instruction_set.wake()
+                                start_time = datetime.datetime.now()
 
                         else:
                             self.take_reading()
@@ -87,11 +88,12 @@ class AirQualitySensor:
                                 self.take_reading()
 
                             else:
-                                self.aggregate()
+                                self.aggregate_readings()
                                 self.save_readings_to_file(READINGS_FILE)
                                 self.instruction_set.sleep()
                                 time.sleep(self.mode.sleep_time)
                                 self.instruction_set.wake()
+                                start_time = datetime.datetime.now()
 
                         else:
                             self.take_reading()
@@ -106,7 +108,11 @@ class AirQualitySensor:
         print(reading.to_dict())
         time.sleep(self.mode.measurement_period)
 
-    def aggregate(self):
+    def aggregate_readings(self):
+        """ Aggregate readings according to the measurement mode.
+
+        :return None:
+        """
         if not self.mode.aggregation:
             return
 
