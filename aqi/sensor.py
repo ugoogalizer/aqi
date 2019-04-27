@@ -5,6 +5,7 @@ import logging
 import os
 import sys
 import time
+import traceback
 
 from aqi.calculator import AQICalculator
 from aqi.instruction_set import SensorInstructionSet
@@ -38,6 +39,7 @@ class AirQualitySensor:
 
         if exc_type:
             self.logger.error('Exception occurred: %s, %s, %s', exc_type, exc_val, exc_tb)
+            traceback.print_tb(exc_tb)
 
         self.instruction_set.sleep()
         self.save_readings_to_file(READINGS_FILE)
