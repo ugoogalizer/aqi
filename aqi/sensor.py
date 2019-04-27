@@ -14,26 +14,33 @@ READINGS_FILE = 'readings.json'
 
 class SensorMode:
 
-    def __init__(self, name, measurement_period, monitoring_duration, sleep_time):
+    def __init__(self, name, measurement_period, monitoring_duration, sleep_time, aggregation=''):
         """ Define a mode for an AirQualitySensor.
 
         :param str name:
         :param float measurement_period: inverse of measurement frequency; measured in seconds
         :param float|None monitoring_duration: duration to monitor for in seconds
         :param float sleep_time: duration to sleep for between monitoring sessions; measured in seconds
+        :param str aggregation: name of aggregation to carry out at monitoring period end
         """
         self.name = name
         self.measurement_period = measurement_period
         self.monitoring_duration = None if monitoring_duration is None else datetime.timedelta(seconds=monitoring_duration)
         self.sleep_time = sleep_time
+        self.aggregation = aggregation
 
     def __repr__(self):
-        return '<{}(name={!r}, measurement_period={!r}, monitoring_duration={!r}, sleep_time={!r})>'.format(
-            self.__class__.__name__,
-            self.name,
-            self.measurement_period,
-            self.monitoring_duration,
-            self.sleep_time
+        return (
+            '<{}(name={!r}, measurement_period={!r}, monitoring_duration={!r}, sleep_time={!r}, '
+            'aggregation={!r})>'
+            .format(
+                self.__class__.__name__,
+                self.name,
+                self.measurement_period,
+                self.monitoring_duration,
+                self.sleep_time,
+                self.aggregation
+            )
         )
 
 
@@ -52,11 +59,12 @@ class AirQualitySensor:
             monitoring_duration=1,
             sleep_time=3599
         ),
-        'hourly_five_minute_measurement': SensorMode(
+        'hourly_five_minute_average': SensorMode(
             name='hourly_five_minute_measurement',
             measurement_period=1,
             monitoring_duration=300,
-            sleep_time=3300
+            sleep_time=3300,
+            aggregation='mean'
         )
     }
 
@@ -92,14 +100,13 @@ class AirQualitySensor:
                 while True:
                     time_spent_monitoring = datetime.datetime.now() - start_time
 
-                    # if time_spent_monitoring % datetime.timedelta(seconds = 300) == 0:
-                    self.save_readings_to_file(READINGS_FILE)
-
                     if self.mode.monitoring_duration:
                         if time_spent_monitoring < self.mode.monitoring_duration:
                             self.take_reading()
 
                         else:
+                            self.aggregate()
+                            self.save_readings_to_file(READINGS_FILE)
                             self.instruction_set.sleep()
                             time.sleep(self.mode.sleep_time)
                             self.instruction_set.wake()
@@ -116,6 +123,19 @@ class AirQualitySensor:
         self.readings.append(reading)
         print(reading.to_dict())
         time.sleep(self.mode.measurement_period)
+
+    def aggregate(self):
+        if not self.mode.aggregation:
+            return
+
+        if self.mode.aggregation == 'mean':
+            raw_average_reading = {
+                'time': self.readings[0].time + (self.readings[0].time + self.readings[-1].time) / 2,
+                'pm25': sum(reading.pm25 for reading in self.readings),
+                'pm10': sum(reading.pm10 for reading in self.readings)
+            }
+
+            self.readings = [self.calculator.calculate_aqis_and_bands(raw_average_reading)]
 
     def save_readings_to_file(self, path):
         """ Save readings to a file, appending to any readings already in the file.
@@ -136,6 +156,8 @@ class AirQualitySensor:
 
         with open(path, 'w') as f:
             json.dump([reading.to_dict() for reading in all_data], f)
+
+        self.readings = []
 
 
 if __name__ == '__main__':
