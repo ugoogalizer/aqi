@@ -35,6 +35,10 @@ class AirQualitySensor:
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.logger.debug('Exiting sensor context.')
+
+        if exc_type:
+            self.logger.error('Exception occurred: %s, %s, %s', exc_type, exc_val, exc_tb)
+
         self.instruction_set.sleep()
         self.save_readings_to_file(READINGS_FILE)
 
@@ -50,8 +54,8 @@ class AirQualitySensor:
         with self:
             if self.mode.sleep_time == 0:
 
+                self.logger.debug('Starting continuous infinite loop.')
                 while True:
-                    self.logger.debug('Starting continuous infinite loop.')
 
                     if not self.mode.night_monitoring:
 
@@ -65,8 +69,8 @@ class AirQualitySensor:
 
             else:
 
+                self.logger.debug('Starting non-continuous infinite loop.')
                 while True:
-                    self.logger.debug('Starting non-continuous infinite loop.')
 
                     if not self.mode.night_monitoring:
 
@@ -154,15 +158,15 @@ class AirQualitySensor:
         :return None:
         """
         if not os.path.exists(path):
-            self.logger.debug('File at %s not found; creating file.', path)
+            self.logger.debug('File at %s not found; creating file', path)
             open(path, 'w+').close()
 
         with open(path, 'r') as f:
             try:
-                self.logger.debug('Opening file at %s.', path)
+                self.logger.debug('Opening file at %s', path)
                 existing_data = [Reading.from_dict(reading) for reading in json.load(f)]
             except:
-                self.logger.debug('Data in file is corrupt; resetting to empty list.')
+                self.logger.debug('Data in file is corrupt; resetting to empty list')
                 existing_data = []
 
         all_data = existing_data + self.readings
