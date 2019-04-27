@@ -1,5 +1,4 @@
 # coding=utf-8
-from collections import OrderedDict
 import serial
 import struct
 import time
@@ -52,10 +51,11 @@ class SensorInstructionSet:
     def process_data(data):
         r = struct.unpack('<HHxxBB', data[2:])
 
-        reading = OrderedDict()
-        reading['time'] = time.strftime('%d.%m.%Y %H:%M:%S')
-        reading['PM2.5'] = r[0] / 10.0
-        reading['PM10'] = r[1] / 10.0
+        reading = {
+            'Time': time.strftime('%d.%m.%Y %H:%M:%S'),
+            'PM2.5': r[0] / 10.0,
+            'PM10': r[1] / 10.0
+        }
 
         return reading
         # checksum = sum(ord(v) for v in data[2:8]) % 256
@@ -94,7 +94,7 @@ class SensorInstructionSet:
         if response[1] == '\xc0':
             return self.process_data(response)
 
-        return {'time': time.strftime('%Y-%m-%d %H:%M:%S'), 'PM2.5': None, 'PM10': None}
+        return {'Time': time.strftime('%Y-%m-%d %H:%M:%S'), 'PM2.5': None, 'PM10': None}
 
     def sleep(self):
         """ Send the sensor to sleep.

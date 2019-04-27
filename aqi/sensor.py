@@ -6,6 +6,7 @@ import time
 
 from aqi.calculator import AQICalculator
 from aqi.instruction_set import SensorInstructionSet
+from aqi.reading import Reading
 
 
 READINGS_FILE = 'readings.json'
@@ -113,7 +114,7 @@ class AirQualitySensor:
         """
         reading = self.calculator.calculate_aqis_and_bands(self.instruction_set.query_data())
         self.readings.append(reading)
-        print(reading)
+        print(reading.to_dict())
         time.sleep(self.mode.measurement_period)
 
     def save_readings_to_file(self, path):
@@ -127,14 +128,14 @@ class AirQualitySensor:
 
         with open(path, 'r') as f:
             try:
-                existing_data = json.load(f)
+                existing_data = [Reading.from_dict(reading) for reading in json.load(f)]
             except:
                 existing_data = []
 
         all_data = existing_data + self.readings
 
         with open(path, 'w') as f:
-            json.dump(all_data, f)
+            json.dump([reading.to_dict() for reading in all_data], f)
 
 
 if __name__ == '__main__':

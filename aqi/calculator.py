@@ -1,5 +1,7 @@
 from collections import OrderedDict
 
+from aqi.reading import Reading
+
 
 class AQICalculator:
     """ A calculator for UK AQI values and bands. These are defined by their lower boundaries (keys) for
@@ -44,20 +46,23 @@ class AQICalculator:
     def calculate_aqis_and_bands(self, reading):
         """ Calculate the AQIs for each pollutant, an overall AQI and an overall AQI band.
 
-        :param OrderedDict reading:
-        :return OrderedDict:
+        :param dict reading:
+        :return aqi.reading.Reading:
         """
         pm25_aqi = self._calculate_aqi(reading['PM2.5'], self.pm25_aqi_lower_boundaries)
         pm10_aqi = self._calculate_aqi(reading['PM10'], self.pm10_aqi_lower_boundaries)
         overall_aqi = max(pm25_aqi, pm10_aqi)
         overall_aqi_band = self._calculate_aqi_band(overall_aqi, self.aqi_bands_boundaries)
 
-        reading['PM2.5 AQI'] = pm25_aqi
-        reading['PM10 AQI'] = pm10_aqi
-        reading['Overall AQI'] = overall_aqi
-        reading['Overall AQI band'] = overall_aqi_band
-
-        return reading
+        return Reading(
+            time=reading['Time'],
+            pm25=reading['PM2.5'],
+            pm25_aqi=pm25_aqi,
+            pm10=reading['PM10'],
+            pm10_aqi=pm10_aqi,
+            overall_aqi=overall_aqi,
+            overall_aqi_band=overall_aqi_band
+        )
 
     @staticmethod
     def _calculate_aqi(concentration, aqi_boundaries):
