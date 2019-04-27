@@ -1,4 +1,5 @@
 # coding=utf-8
+import logging
 import serial
 import struct
 import time
@@ -18,6 +19,8 @@ class SensorInstructionSet:
     MODE_QUERY = 1
 
     data = ''
+
+    logger = logging.getLogger(__name__)
 
     def __init__(self, mock=False):
 
@@ -101,6 +104,7 @@ class SensorInstructionSet:
 
         :return None:
         """
+        self.logger.debug('Sending sensor to sleep.')
         mode = 0
         self.set_mode(mode)
         self.serial_interface.write(self.construct_command(self.CMD_SLEEP, [0x1, mode]))
@@ -111,6 +115,7 @@ class SensorInstructionSet:
 
         :return None:
         """
+        self.logger.debug('Waking sensor up.')
         mode = 1
         self.serial_interface.write(self.construct_command(self.CMD_SLEEP, [0x1, mode]))
         self.read_response()
