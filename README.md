@@ -13,6 +13,8 @@ Not Working and on the TODO list:
 * HTTP webpage (plot.ly) displaying historic sensor measurements
 * RESTful API (intended to access from Home Assistant (homeassistant.io))
 * Migrate sensor code from Python2 to Python3
+* Run code in python virtual environment
+
 
 
 ## Pre-Requisitites
@@ -26,6 +28,10 @@ Not Working and on the TODO list:
 ```
 sudo cp ./html/* /var/www/html
 ````
+UNKNOWN if actually required, don't remember doing this: 
+```
+sudo apt install python-serial python-enum lighttpd
+```
 
 ## OLED Display Setup
 
@@ -63,9 +69,9 @@ sudo  i2cdetect -y 1
 You should see something like: 
 ![I2C result screen](https://cdn-learn.adafruit.com/assets/assets/000/074/057/medium800/adafruit_products_i2c.png?1554480832)
 
-## Running Everything
+## Run Everything
 
-## Run the Sensor
+### Run the Sensor
 
 On the raspberry pi from the local copy of the git repo, run: 
 
@@ -86,7 +92,7 @@ CTRL+C quits the display (and now turns off the display rather than leaves it to
 Currently, this package only works in `python2` due to its use of strings as bytestrings. As a result, from the 
 repository root, run
 ```bash
-sudo apt install python-serial python-enum lighttpd
+
 virtualenv venv
 . venv/bin/activate
 pip install -e .
