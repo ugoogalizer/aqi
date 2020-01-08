@@ -115,9 +115,9 @@ if __name__ == "__main__":
     while True:
         logging.info('collection is starting')
         cmd_set_sleep(0)
-        cmd_set_mode(1);
+        cmd_set_mode(1)
         for t in range(15):
-            values = cmd_query_data();
+            values = cmd_query_data()
             if values is not None:
                 print("PM2.5: ", values[0], ", PM10: ", values[1])
                 logging.debug("values: PM2.5: {0}, PM10: {1}".format(values[0], values[1]))
@@ -150,6 +150,6 @@ if __name__ == "__main__":
 
         print("Going to sleep for 5min...")
         logging.info('sleeping for 5 minutes')
-        cmd_set_mode(0);
+        cmd_set_mode(0)
         cmd_set_sleep()
         time.sleep(300)
