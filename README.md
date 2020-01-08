@@ -2,6 +2,8 @@
 Measure AQI based on PM2.5 or PM10 with a Raspberry Pi and a SDS011 particle sensor.  In my case I used the Raspberry Pi Zero W.
 Intended to also display API information Adafruit 128x32 Mini OLED device ()
 
+Original inspiration from Hackenoon's https://hackernoon.com/how-to-measure-particulate-matter-with-a-raspberry-pi-75faa470ec35 and the corresponding github: https://github.com/zefanja/aqi
+
 ## Pre-Requisitites
 
 * Install raspbian on the pi.
@@ -41,7 +43,12 @@ Now you can plug in the OLED to the display, then power it back on.
 
 ### Test I2C
 
-
+Run: 
+```
+sudo  i2cdetect -y 1
+```
+You should see something like: 
+![I2C result screen](https://cdn-learn.adafruit.com/assets/assets/000/074/057/medium800/adafruit_products_i2c.png?1554480832)
 
 ## Installation
 Currently, this package only works in `python2` due to its use of strings as bytestrings. As a result, from the 
