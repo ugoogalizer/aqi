@@ -17,7 +17,8 @@ MODE_ACTIVE = 0
 MODE_QUERY = 1
 
 ser = serial.Serial()
-ser.port = "/dev/ttyUSB0"
+# ser.port = "/dev/ttyUSB0"
+ser.port = "/dev/ttyAMA0"
 ser.baudrate = 9600
 
 ser.open()
