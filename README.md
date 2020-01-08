@@ -1,18 +1,46 @@
-# aqi
-Measure AQI based on PM2.5 or PM10 with a Raspberry Pi and a SDS011 particle sensor.
+# aqi-pi
+Measure AQI based on PM2.5 or PM10 with a Raspberry Pi and a SDS011 particle sensor.  In my case I used the Raspberry Pi Zero W.
 Intended to also display API information Adafruit 128x32 Mini OLED device ()
 
-    
+## Pre-Requisitites
+
+* Install raspbian on the pi.
+
 
 
 ## Setup OLED Display
 
+Don't plug in the OLED display to your pi yet...
+
+### Install Python Libs
 On the raspberry pi (as per https://learn.adafruit.com/adafruit-pioled-128x32-mini-oled-for-raspberry-pi/usage)
 ```
 sudo apt-get install python3-pip
 sudo pip3 install adafruit-circuitpython-ssd1306
 
 ```
+Optionally to allow different fonts (not done here yet, you can:)
+
+```
+sudo apt-get install python3-pil
+```
+
+### Enable I2C
+As per: https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c
+
+Use raspi-config to enable I2C Interface and install required (testing?) software
+
+```
+sudo apt-get install -y python-smbus i2c-tools
+sudo raspi-config
+<make changes>
+sudo shutdown -h now
+```
+
+Now you can plug in the OLED to the display, then power it back on.
+
+### Test I2C
+
 
 
 ## Installation
