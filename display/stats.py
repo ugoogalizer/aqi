@@ -101,9 +101,9 @@ while True:
     cmd = "df -h | awk '$NF==\"/\"{printf \"Disk: %d/%d GB  %s\", $3,$2,$5}'"
     Disk = subprocess.check_output(cmd, shell=True).decode("utf-8")
 
-    cmd = "tail -n 1 aqi.json | awk '{print \"PM10:\",$4}'"
+    cmd = "tail -n 1 /var/www/html/aqi.json | awk '{print \"PM10:\",$4}'"
     pm10 = subprocess.check_output(cmd, shell=True).decode("utf-8")
-    cmd = "tail -n 1 aqi.json | awk '{print \"PM2.5:\",$2}'"
+    cmd = "tail -n 1 /var/www/html/aqi.json | awk '{print \"PM2.5:\",$2}'"
     pm25 = subprocess.check_output(cmd, shell=True).decode("utf-8")
     
     # Write four lines of text.
