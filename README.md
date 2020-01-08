@@ -87,21 +87,3 @@ sudo python3 ./display/stats.py
 ```
 CTRL+C quits the display (and now turns off the display rather than leaves it to run and burn out your screen)
 
-
-## AQI Installation
-Currently, this package only works in `python2` due to its use of strings as bytestrings. As a result, from the 
-repository root, run
-```bash
-
-virtualenv venv
-. venv/bin/activate
-pip install -e .
-```
-
-## Usage
-```bash
-python2 sensor.py
-```
-
-## Example output
-See api-example.json
