@@ -2,6 +2,8 @@
 # Author: Tony DiCola & James DeVito
 #
 # Updated by Matt Curtis 20190108 to enable exit handling to turn off display when python exits (to save OLED display)
+# Note: Source code of the Python library used to interface with the OLED can be found here: 
+# https://github.com/adafruit/Adafruit_CircuitPython_SSD1306/blob/master/adafruit_ssd1306.py
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -79,7 +81,7 @@ font = ImageFont.load_default()
 
 #function to clear the screen on exit
 def disableDisplay():
-    disp.ssd1306_command(adafruit_ssd1306.SSD1306_DISPLAYOFF)
+    disp.poweroff()
 
 atexit.register(disableDisplay)
 
