@@ -102,7 +102,7 @@ while True:
     Disk = subprocess.check_output(cmd, shell=True).decode("utf-8")
 
     aqiHeader = "Air Quality Sensor"
-    cmd = "tail -n 1 aqi.json | awk '{print \"\",$6,$7}'"
+    cmd = "tail -n 1 /var/www/html/aqi.json | awk '{print \"\",$6,$7}'"
     aqiDateTime = subprocess.check_output(cmd, shell=True).decode("utf-8")
     cmd = "tail -n 1 /var/www/html/aqi.json | awk '{print \"PM10:\",$4}'"
     pm10 = subprocess.check_output(cmd, shell=True).decode("utf-8")
