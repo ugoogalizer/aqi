@@ -14,3 +14,13 @@ venv-python2
 htmlcov/
 *.log
 *readings.json
+aqi.orig/__init__.py
+aqi.orig/calculator.py
+aqi.orig/instruction_set.py
+aqi.orig/measurement_modes.py
+aqi.orig/reading.py
+aqi.orig/sensor.py
+aqi.orig/visualisation.py
+aqi.orig/tests/__init__.py
+aqi.orig/tests/test_calculator.py
+aqi.orig/tests/test_sensor.py

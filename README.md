@@ -46,6 +46,7 @@ Use raspi-config to enable I2C Interface and install required (testing?) softwar
 sudo apt-get install -y python-smbus i2c-tools
 sudo raspi-config
 <make changes>
+<also enable the serial interface while there (but don't enable login shell)>
 sudo shutdown -h now
 ```
 
@@ -60,7 +61,19 @@ sudo  i2cdetect -y 1
 You should see something like: 
 ![I2C result screen](https://cdn-learn.adafruit.com/assets/assets/000/074/057/medium800/adafruit_products_i2c.png?1554480832)
 
-## Installation
+### Run the default adafruit stats script: 
+
+On the raspberry pi from the local copy of the git repo, run: 
+```
+sudo python3 ./display/stats.py
+```
+CTRL+C quits the display (and now turns off the display rather than leaves it to run and burn out your screen)
+
+### Enable Serial Port on Raspi
+
+
+
+## AQI Installation
 Currently, this package only works in `python2` due to its use of strings as bytestrings. As a result, from the 
 repository root, run
 ```bash

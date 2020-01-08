@@ -66,7 +66,7 @@ class AQICalculator:
 
     @staticmethod
     def _calculate_aqi(concentration, aqi_boundaries):
-        for aqi_value, lower_boundary in reversed(aqi_boundaries.items()):
+        for aqi_value, lower_boundary in reversed(list(aqi_boundaries.items())):
             if concentration < lower_boundary:
                 continue
             return aqi_value
@@ -74,7 +74,7 @@ class AQICalculator:
 
     @staticmethod
     def _calculate_aqi_band(aqi, aqi_bands_boundaries):
-        for aqi_band, lower_boundary in reversed(aqi_bands_boundaries.items()):
+        for aqi_band, lower_boundary in reversed(list(aqi_bands_boundaries.items())):
             if aqi < lower_boundary:
                 continue
             return aqi_band

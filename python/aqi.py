@@ -135,8 +135,8 @@ if __name__ == "__main__":
         csv_file.close()
         logging.debug('Closed aqi.csv')
 
-        # check if length is more than 100 and delete first element
-        if len(data) > 100:
+        # check if length is more than 10000 and delete first element
+        if len(data) > 10000:
             data.pop(0)
 
         # append new values

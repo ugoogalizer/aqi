@@ -9,7 +9,7 @@ from aqi.sensor import READINGS_FILE
 
 with open(READINGS_FILE, 'r') as f:
     readings = pd.DataFrame(
-        filter(None, json.load(f, encoding='utf-8'))
+        [_f for _f in json.load(f, encoding='utf-8') if _f]
     )
 
 sns.set()

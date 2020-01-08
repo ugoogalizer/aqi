@@ -33,7 +33,7 @@ class SensorInstructionSet:
 
     @staticmethod
     def dump(data, prefix=''):
-        print(prefix + ' '.join(x.encode('hex') for x in data))
+        print((prefix + ' '.join(x.encode('hex') for x in data)))
 
     def construct_command(self, command, data=None):
         data = data or []
@@ -68,10 +68,10 @@ class SensorInstructionSet:
     def process_version(data):
         r = struct.unpack('<BBBHBB', data[3:])
         checksum = sum(ord(v) for v in data[2:8]) % 256
-        print(
+        print((
             'Y: {}, M: {}, D: {}, ID: {}, CRC={}'
             .format(r[0], r[1], r[2], hex(r[3]), 'OK' if (checksum == r[4] and r[5] == 0xab) else 'NOK')
-        )
+        ))
 
     def read_response(self):
         byte = 0
