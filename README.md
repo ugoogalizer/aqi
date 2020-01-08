@@ -1,5 +1,19 @@
 # aqi
 Measure AQI based on PM2.5 or PM10 with a Raspberry Pi and a SDS011 particle sensor.
+Intended to also display API information Adafruit 128x32 Mini OLED device ()
+
+    
+
+
+## Setup OLED Display
+
+On the raspberry pi (as per https://learn.adafruit.com/adafruit-pioled-128x32-mini-oled-for-raspberry-pi/usage)
+```
+sudo apt-get install python3-pip
+sudo pip3 install adafruit-circuitpython-ssd1306
+
+```
+
 
 ## Installation
 Currently, this package only works in `python2` due to its use of strings as bytestrings. As a result, from the 
