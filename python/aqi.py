@@ -130,10 +130,10 @@ if __name__ == "__main__":
 
         # csv
         logging.debug('Opening aqi.csv')
-	    csv_file = open('/var/www/html/aqi.csv', 'a')
-	    csv_file.write("{0},{1},{2}\n".format(values[0],values[1],time.strftime("%d.%m.%Y %H:%M:%S")))
-	    csv_file.close()
-	    logging.debug('Closed aqi.csv')
+        csv_file = open('/var/www/html/aqi.csv', 'a')
+        csv_file.write("{0},{1},{2}\n".format(values[0],values[1],time.strftime("%d.%m.%Y %H:%M:%S")))
+        csv_file.close()
+        logging.debug('Closed aqi.csv')
 
         # check if length is more than 100 and delete first element
         if len(data) > 100:
