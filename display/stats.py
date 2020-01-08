@@ -79,7 +79,7 @@ font = ImageFont.load_default()
 
 #function to clear the screen on exit
 def disableDisplay():
-    disp.command(adafruit_ssd1306.SSD1306_DISPLAYOFF)
+    disp.ssd1306_command(adafruit_ssd1306.SSD1306_DISPLAYOFF)
 
 atexit.register(disableDisplay)
 
