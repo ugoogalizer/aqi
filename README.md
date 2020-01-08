@@ -4,9 +4,24 @@ Intended to also display API information Adafruit 128x32 Mini OLED device ()
 
 Original inspiration from Hackenoon's https://hackernoon.com/how-to-measure-particulate-matter-with-a-raspberry-pi-75faa470ec35 and the corresponding github: https://github.com/zefanja/aqi
 
+Working
+* Nothing yet...
+
+Not Working: 
+* Sensor of PM10 and PM2.5
+* HTTP webpage displaying current sensor measurements
+* HTTP webpage (plot.ly) displaying historic sensor measurements
+* RESTful API (intended to access from Home Assistant (homeassistant.io))
+* OLED Disply (intended to display aqi result on local display to enable portable measurements)
+
+
 ## Pre-Requisitites
 
 * Install raspbian on the pi.
+* Clone this (or a forked copy) of this repo to your pi: 
+```
+ git clone https://github.com/ugoogalizer/aqi-pi.git
+```
 
 
 
