@@ -5,6 +5,7 @@
 from __future__ import print_function
 import serial, struct, sys, time, json
 import logging
+from os.path import exists
 
 DEBUG = 0
 CMD_MODE = 2
@@ -25,6 +26,15 @@ ser.open()
 ser.flushInput()
 
 byte, data = 0, ""
+
+def initiate_json(file_path):
+    """
+    Check to see if the aqi.json exists in the html direcotry and add it if not
+    """
+    if not exists(file_path):
+        with open(file_path,"w") as fresh_file:
+            fresh_file.write('[]')
+
 
 def dump(d, prefix=''):
     print(prefix + ' '.join(x.encode('hex') for x in d))
@@ -98,6 +108,7 @@ def cmd_set_id(id):
     read_response()
 
 if __name__ == "__main__":
+    initiate_json('/var/www/html/aqi.json')
     logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p',
                         filename='aqi.log', level=logging.DEBUG)
     logging.info('AQI Monitor has been started!')
@@ -119,17 +130,19 @@ if __name__ == "__main__":
 
         # csv
         logging.debug('Opening aqi.csv')
-	csv_file = open('/var/www/html/aqi.csv', 'a')
-	csv_file.write("{0},{1},{2}\n".format(values[0],values[1],time.strftime("%d.%m.%Y %H:%M:%S")))
-	csv_file.close()
-	logging.debug('Closed aqi.csv')
+	    csv_file = open('/var/www/html/aqi.csv', 'a')
+	    csv_file.write("{0},{1},{2}\n".format(values[0],values[1],time.strftime("%d.%m.%Y %H:%M:%S")))
+	    csv_file.close()
+	    logging.debug('Closed aqi.csv')
 
         # check if length is more than 100 and delete first element
         if len(data) > 100:
             data.pop(0)
 
         # append new values
-        data.append({'pm25': values[0], 'pm10': values[1], 'time': time.strftime("%d.%m.%Y %H:%M:%S")})
+        # data.append({'pm25': values[0], 'pm10': values[1], 'time': time.strftime("%d.%m.%Y %H:%M:%S")})
+        # Using ctime() instead of strftime().  
+        data.append({'pm25': values[0], 'pm10': values[1], 'time': time.ctime()})
 
         # save it
         with open('/var/www/html/aqi.json', 'w') as outfile:
