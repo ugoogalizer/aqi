@@ -34,11 +34,6 @@ On the raspberry pi (as per https://learn.adafruit.com/adafruit-pioled-128x32-mi
 ```
 sudo apt-get install python3-pip
 sudo pip3 install adafruit-circuitpython-ssd1306
-
-```
-Optionally to allow different fonts (not done here yet, you can:)
-
-```
 sudo apt-get install python3-pil
 ```
 

@@ -1,6 +1,8 @@
 # Copyright (c) 2017 Adafruit Industries
 # Author: Tony DiCola & James DeVito
 #
+# Updated by Matt Curtis 20190108 to enable exit handling to turn off display when python exits (to save OLED display)
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -31,6 +33,7 @@ from board import SCL, SDA
 import busio
 from PIL import Image, ImageDraw, ImageFont
 import adafruit_ssd1306
+import atexit
  
  
 # Create the I2C interface.
@@ -73,7 +76,13 @@ font = ImageFont.load_default()
 # same directory as the python script!
 # Some other nice fonts to try: http://www.dafont.com/bitmap.php
 #font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 9)
- 
+
+#function to clear the screen on exit
+def disableDisplay():
+    disp.command(adafruit_ssd1306.SSD1306_DISPLAYOFF)
+
+atexit.register(disableDisplay)
+
 while True:
  
     # Draw a black filled box to clear the image.
