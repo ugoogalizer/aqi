@@ -7,11 +7,12 @@ Original inspiration from Hackernoon's https://hackernoon.com/how-to-measure-par
 Working
 * HTTP webpage displaying current sensor measu
 * OLED Disply (intended to display aqi result on local display to enable portable measurements)
+* RESTful API (intended to access from Home Assistant (homeassistant.io))
 
 Not Working and on the TODO list: 
 * Sensor of PM10 and PM2.5 measurements (waiting postal service of sensor itself)
+* Home Assistant yaml configuration to read from RESTful interface
 * HTTP webpage (plot.ly) displaying historic sensor measurements
-* RESTful API (intended to access from Home Assistant (homeassistant.io))
 * Migrate sensor code from Python2 to Python3
 * Run code in python virtual environment
 * Tidy up repo removing unused artifacts
@@ -28,9 +29,6 @@ Not Working and on the TODO list:
 * Copy the contents of the html directory into /var/www/html
 ```
 sudo cp ./html/* /var/www/html
-````
-UNKNOWN if actually required, don't remember doing this: 
-```
 sudo apt install python-serial python-enum lighttpd
 ```
 
@@ -90,7 +88,7 @@ CTRL+C quits the display (and now turns off the display rather than leaves it to
 
 ## Creating the RESTful Interface
 
-Run a simple RESTful interface that returns the latest sensor status in JSON format, intended for ingestion into Home Assistant but could be ingested by other sources.
+Run a simple RESTful interface that returns the latest sensor status in JSON format, intended for ingestion into Home Assistant (https://www.home-assistant.io/integrations/rest/) but could be ingested by other sources.
 
 
 ```
