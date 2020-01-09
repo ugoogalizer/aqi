@@ -88,13 +88,26 @@ CTRL+C quits the display (and now turns off the display rather than leaves it to
 
 ## Creating the RESTful Interface
 
-Run a simple RESTful interface that returns the latest sensor status in JSON format, intended for ingestion into Home Assistant (https://www.home-assistant.io/integrations/rest/) but could be ingested by other sources.
+Run a simple RESTful interface using Python3 and Flask that returns the latest sensor status in JSON format, intended for ingestion into Home Assistant (https://www.home-assistant.io/integrations/rest/) but could be ingested by other sources.
 
 
 ```
 sudo pip3 install flask
 sudo python3 ./python/restful_helloworld.py
 sudo python3 ./python/restful_api.py
+```
+
+API is available at: http://0.0.0.0:81/aqi/v1.0/aqi and returns JSON: 
+```
+{
+  "Overall AQI": 1,
+  "Overall AQI band": "low",
+  "PM10 AQI": 1,
+  "PM2.5 AQI": 1,
+  "pm10": 70.0,
+  "pm25": 301.5,
+  "time": "08.01.2020 22:04:05"
+}
 ```
 
 Inspiration from this came from: https://auth0.com/blog/developing-restful-apis-with-python-and-flask/ and http://mattrichardson.com/Raspberry-Pi-Flask/
