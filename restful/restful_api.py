@@ -5,22 +5,23 @@ import json
 
 @app.route("/")
 def hello_world():
-  return "Hello, World!"
+  return "Hello, World!  This is the RESTful API server for Air Quality Monitoring.  Try hitting /aqi/v1.0/aqi"
 
-tasks = [
-    {
-        'id': 1,
-        'title': u'Buy groceries',
-        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol',
-        'done': False
-    },
-    {
-        'id': 2,
-        'title': u'Learn Python',
-        'description': u'Need to find a good Python tutorial on the web',
-        'done': False
-    }
-]
+#tasks = [
+#    {
+#        'id': 1,
+#        'title': u'Buy groceries',
+#        'description': u'Milk, Cheese, Pizza, Fruit, Tylenol',
+#        'done': False
+#    },
+#    {
+#        'id': 2,
+#        'title': u'Learn Python',
+#        'description': u'Need to find a good Python tutorial on the web',
+#        'done': False
+#    }
+#]
+
 #Proper way to extract from json file by reading json structure
 with open("/var/www/html/aqi.json", "r") as read_file:
     measurementdata = json.load(read_file)
@@ -35,9 +36,9 @@ with open("/var/www/html/aqi.json", "r") as read_file:
 def get_aqi():
     return jsonify(measurement)
 
-@app.route('/todo/api/v1.0/tasks', methods=['GET'])
-def get_tasks():
-    return jsonify({'tasks': tasks})
+#@app.route('/todo/api/v1.0/tasks', methods=['GET'])
+#def get_tasks():
+#    return jsonify({'tasks': tasks})
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=81, debug=True)
