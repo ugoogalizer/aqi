@@ -106,22 +106,23 @@ while True:
     cmd = "df -h | awk '$NF==\"/\"{printf \"Disk: %d/%d GB  %s\", $3,$2,$5}'"
     Disk = subprocess.check_output(cmd, shell=True).decode("utf-8")
 
-    aqiHeader = "Air Quality Sensor"
-    cmd = "tail -n 1 /var/www/html/aqi.json | awk '{print \"\",$6,$7}'"
-    aqiDateTime = subprocess.check_output(cmd, shell=True).decode("utf-8")
-    cmd = "tail -n 1 /var/www/html/aqi.json | awk '{print \"PM10:\",$4}'"
-    aqipm10 = subprocess.check_output(cmd, shell=True).decode("utf-8")
-    cmd = "tail -n 1 /var/www/html/aqi.json | awk '{print \"PM2.5:\",$2}'"
-    aqipm25 = subprocess.check_output(cmd, shell=True).decode("utf-8")
+    #Crappy way to extract from json file
+    #aqiHeader = "Air Quality Sensor"
+    #cmd = "tail -n 1 /var/www/html/aqi.json | awk '{print \"\",$6,$7}'"
+    #aqiDateTime = subprocess.check_output(cmd, shell=True).decode("utf-8")
+    #cmd = "tail -n 1 /var/www/html/aqi.json | awk '{print \"PM10:\",$4}'"
+    #aqipm10 = subprocess.check_output(cmd, shell=True).decode("utf-8")
+    #cmd = "tail -n 1 /var/www/html/aqi.json | awk '{print \"PM2.5:\",$2}'"
+    #aqipm25 = subprocess.check_output(cmd, shell=True).decode("utf-8")
 
-
+    #Proper way to extract from json file by reading json structure
     with open("/var/www/html/aqi.json", "r") as read_file:
         measurementdata = json.load(read_file)
         measurement = measurementdata[-1]
         #print(measurement)
-        aqipm10 = measurement['pm10']
-        aqipm25 = measurement['pm25']
-        aqiDateTime = measurement['time']
+        aqipm10 = "PM10: " + str(measurement['pm10'])
+        aqipm25 = "PM2.5: " + str(measurement['pm25'])
+        aqiDateTime = str(measurement['time'])
     
     # Write four lines of text.
  
