@@ -1,15 +1,15 @@
 # aqi-pi
 Measure AQI based on PM2.5 or PM10 with a Raspberry Pi and a SDS011 particle sensor.  In my case I used the Raspberry Pi Zero W.
-Intended to also display API information Adafruit 128x32 Mini OLED device ()
+This package also  displays AQI information on a Adafruit 128x32 Mini OLED device () attached to the Pi. This allows the device to become portable when run from a portable USB power supply and not require WiFi or access to a web browser to see the results.
 
-Original inspiration from Hackenoon's https://hackernoon.com/how-to-measure-particulate-matter-with-a-raspberry-pi-75faa470ec35 and the corresponding github: https://github.com/zefanja/aqi
+Original inspiration from Hackernoon's https://hackernoon.com/how-to-measure-particulate-matter-with-a-raspberry-pi-75faa470ec35 and the corresponding github: https://github.com/zefanja/aqi
 
 Working
 * HTTP webpage displaying current sensor measu
 * OLED Disply (intended to display aqi result on local display to enable portable measurements)
 
 Not Working and on the TODO list: 
-* Sensor of PM10 and PM2.5rements (waiting postal service of sensor itself)
+* Sensor of PM10 and PM2.5 measurements (waiting postal service of sensor itself)
 * HTTP webpage (plot.ly) displaying historic sensor measurements
 * RESTful API (intended to access from Home Assistant (homeassistant.io))
 * Migrate sensor code from Python2 to Python3
@@ -88,3 +88,12 @@ sudo python3 ./display/stats.py
 ```
 CTRL+C quits the display (and now turns off the display rather than leaves it to run and burn out your screen)
 
+## Creating the RESTful Interface
+
+Intent here is to create a simple RESTful interface that returns the latest sensor status in JSON, ultimately intended for ingestion into Home Assistant.
+
+Inspiration from this came from: https://auth0.com/blog/developing-restful-apis-with-python-and-flask/
+
+```
+pip3 install flask
+```
