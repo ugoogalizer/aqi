@@ -84,18 +84,19 @@ sudo python2 ./python/aqi.py
 
 On the raspberry pi from the local copy of the git repo, run: 
 ```
-sudo python3 ./display/stats.py
+sudo python3 ./python/disply.py
 ```
 CTRL+C quits the display (and now turns off the display rather than leaves it to run and burn out your screen)
 
 ## Creating the RESTful Interface
 
-Intent here is to create a simple RESTful interface that returns the latest sensor status in JSON, ultimately intended for ingestion into Home Assistant.
+Run a simple RESTful interface that returns the latest sensor status in JSON format, intended for ingestion into Home Assistant but could be ingested by other sources.
 
-Inspiration from this came from: https://auth0.com/blog/developing-restful-apis-with-python-and-flask/
 
 ```
 sudo pip3 install flask
-sudo python3 ./restful/helloworld.py
-sudo python3 ./restful/restful_api.py
+sudo python3 ./python/restful_helloworld.py
+sudo python3 ./python/restful_api.py
 ```
+
+Inspiration from this came from: https://auth0.com/blog/developing-restful-apis-with-python-and-flask/ and http://mattrichardson.com/Raspberry-Pi-Flask/
