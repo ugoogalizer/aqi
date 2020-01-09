@@ -14,6 +14,7 @@ Not Working and on the TODO list:
 * RESTful API (intended to access from Home Assistant (homeassistant.io))
 * Migrate sensor code from Python2 to Python3
 * Run code in python virtual environment
+* Tidy up repo removing unused artifacts
 
 
 
