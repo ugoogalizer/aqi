@@ -1,6 +1,7 @@
 #!flask/bin/python
 from flask import Flask, jsonify
 app = Flask(__name__)
+import json
 
 @app.route("/")
 def hello_world():
@@ -20,6 +21,19 @@ tasks = [
         'done': False
     }
 ]
+#Proper way to extract from json file by reading json structure
+with open("/var/www/html/aqi.json", "r") as read_file:
+    measurementdata = json.load(read_file)
+    measurement = measurementdata[-1]
+    #print(measurement)
+    #aqipm10 = "PM10: " + str(measurement['pm10'])
+    #aqipm25 = "PM2.5: " + str(measurement['pm25'])
+    #aqiDateTime = str(measurement['time'])
+
+
+@app.route('/aqi/v1.0/aqi', methods=['GET'])
+def get_aqi():
+    return jsonify(measurement)
 
 @app.route('/todo/api/v1.0/tasks', methods=['GET'])
 def get_tasks():
