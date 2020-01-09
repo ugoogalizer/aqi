@@ -124,6 +124,7 @@ while True:
         aqipm25 = "PM2.5: " + str(measurement['pm25'])
         aqiDateTime = str(measurement['time'])
     
+    aqiHeader = "Air Quality Sensor"
     # Write four lines of text.
  
     #draw.text((x, top+0), "IP: "+IP, font=font, fill=255)
