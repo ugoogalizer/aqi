@@ -110,15 +110,18 @@ while True:
     cmd = "tail -n 1 /var/www/html/aqi.json | awk '{print \"\",$6,$7}'"
     aqiDateTime = subprocess.check_output(cmd, shell=True).decode("utf-8")
     cmd = "tail -n 1 /var/www/html/aqi.json | awk '{print \"PM10:\",$4}'"
-    pm10 = subprocess.check_output(cmd, shell=True).decode("utf-8")
+    aqipm10 = subprocess.check_output(cmd, shell=True).decode("utf-8")
     cmd = "tail -n 1 /var/www/html/aqi.json | awk '{print \"PM2.5:\",$2}'"
-    pm25 = subprocess.check_output(cmd, shell=True).decode("utf-8")
+    aqipm25 = subprocess.check_output(cmd, shell=True).decode("utf-8")
 
 
     with open("/var/www/html/aqi.json", "r") as read_file:
         measurementdata = json.load(read_file)
-        measurement = measurementdata[measurementdata.length-1]
-        print(measurement)
+        measurement = measurementdata[-1]
+        #print(measurement)
+        aqipm10 = measurement['pm10']
+        aqipm25 = measurement['pm25']
+        aqiDateTime = measurement['time']
     
     # Write four lines of text.
  
@@ -129,8 +132,8 @@ while True:
 
     draw.text((x, top+0), aqiHeader, font=font, fill=255)
     draw.text((x, top+8), aqiDateTime, font=font, fill=255)
-    draw.text((x, top+16), pm10, font=font, fill=255)
-    draw.text((x, top+25), pm25, font=font, fill=255)
+    draw.text((x, top+16), aqipm10, font=font, fill=255)
+    draw.text((x, top+25), aqipm25, font=font, fill=255)
  
     # Display image.
     disp.image(image)
