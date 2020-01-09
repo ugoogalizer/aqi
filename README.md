@@ -95,5 +95,7 @@ Intent here is to create a simple RESTful interface that returns the latest sens
 Inspiration from this came from: https://auth0.com/blog/developing-restful-apis-with-python-and-flask/
 
 ```
-pip3 install flask
+sudo pip3 install flask
+sudo python3 ./restful/helloworld.py
+sudo python3 ./restful/restful_api.py
 ```
