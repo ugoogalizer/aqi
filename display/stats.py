@@ -1,9 +1,12 @@
 # Copyright (c) 2017 Adafruit Industries
 # Author: Tony DiCola & James DeVito
 #
-# Updated by Matt Curtis 20190108 to enable exit handling to turn off display when python exits (to save OLED display)
+# Updated by Ugoogalizer 20190108 to enable exit handling to turn off display when python exits (to save OLED display)
 # Note: Source code of the Python library used to interface with the OLED can be found here: 
 # https://github.com/adafruit/Adafruit_CircuitPython_SSD1306/blob/master/adafruit_ssd1306.py
+#
+# - 20200109 - Read in aqi sensor data direct from json file
+#
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +39,8 @@ import busio
 from PIL import Image, ImageDraw, ImageFont
 import adafruit_ssd1306
 import atexit
+
+import json
  
  
 # Create the I2C interface.
@@ -108,6 +113,12 @@ while True:
     pm10 = subprocess.check_output(cmd, shell=True).decode("utf-8")
     cmd = "tail -n 1 /var/www/html/aqi.json | awk '{print \"PM2.5:\",$2}'"
     pm25 = subprocess.check_output(cmd, shell=True).decode("utf-8")
+
+
+    with open("/var/www/html/aqi.json", "r") as read_file:
+        measurementdata = json.load(read_file)
+        measurement = measurementdata[measurementdata.length-1]
+        print(measurement)
     
     # Write four lines of text.
  
