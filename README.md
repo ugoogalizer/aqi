@@ -1,6 +1,8 @@
 # aqi-pi
-Measure AQI based on PM2.5 or PM10 with a Raspberry Pi and a SDS011 particle sensor.  In my case I used the Raspberry Pi Zero W.
-This package also  displays AQI information on a Adafruit 128x32 Mini OLED device () attached to the Pi. This allows the device to become portable when run from a portable USB power supply and not require WiFi or access to a web browser to see the results.
+Measure AQI based on PM2.5 or PM10 with a Raspberry Pi and a SDS011 particle sensor. 
+This package also displays AQI information on a Adafruit 128x32 Mini OLED device () attached to the Pi. This allows the device to become portable when run from a portable USB power supply and not require WiFi or access to a web browser to see the results.
+
+
 
 Original inspiration from Hackernoon's https://hackernoon.com/how-to-measure-particulate-matter-with-a-raspberry-pi-75faa470ec35 and the corresponding github: https://github.com/zefanja/aqi
 
@@ -17,10 +19,21 @@ Not Working and on the TODO list:
 * Run code in python virtual environment
 * Tidy up repo removing unused artifacts
 * Publish to a public location, current plan is to http://sensor.community (also known as https://luftdaten.info/)
-
+* Use a DHT11 or DHT22 to measure temp and humidity too
 
 
 ## Pre-Requisitites
+
+### Hardware Required: 
+
+* Raspberry Pi (In my case I used the Raspberry Pi Zero W, but should work with any version of Pi.)
+  ![](./img/PiZeroOLED.jpg)
+* Raspberry Pi Header that you'll have to solder on, (or just get the Pi Zero WH model that has it pre-soldered)
+* SDS011 Particulate Sensor
+* Adafruit 128x32 Mini OLED device (Optional, enables readings on the device without WiFi or web browser)
+* Micro USE Power Supply (for the Pi)
+
+### Initial Software Setup
 
 * Install raspbian on the pi.
 * Clone this (or a forked copy) of this repo to your pi: 
