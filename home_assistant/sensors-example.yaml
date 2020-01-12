@@ -1,0 +1,69 @@
+
+#Air Quality Sensors (AQI)
+#Examples found at: https://www.home-assistant.io/integrations/rest/
+sensor:
+  - platform: rest
+    name: aqi_external_sensors
+    resource: http://192.168.2.215:81/aqi/v1.0/aqi
+    method: GET
+    json_attributes:
+      - pm10
+      - pm25
+      - pm10 AQI
+      - pm25 AQI
+      - time
+      - Overall AQI
+      - Overall AQI band
+    #value_template: 'OK'
+    value_template: '{{ value_json.time }}'
+  - platform: template
+    sensors:
+      aqi_external_pm25_sensor:
+        value_template: '{{ states.sensor.aqi_external_sensors.attributes["pm25"] }}'
+        #device_class:
+        unit_of_measurement: 'µg/m³'
+      aqi_external_pm10_sensor:
+        value_template: '{{ states.sensor.aqi_external_sensors.attributes["pm10"] }}'
+        #device_class:
+        unit_of_measurement: 'µg/m³'
+      aqi_external_pm25aqi_sensor:
+        value_template: '{{ states.sensor.aqi_external_sensors.attributes["pm25 AQI"] }}'
+        #device_class:
+        unit_of_measurement: 'µg/m³'
+      aqi_external_pm10aqi_sensor:
+        value_template: '{{ states.sensor.aqi_external_sensors.attributes["pm10 AQI"] }}'
+        #device_class:
+        unit_of_measurement: 'µg/m³'
+        
+  - platform: rest
+    name: aqi_internal_sensors
+    resource: http://192.168.2.214:81/aqi/v1.0/aqi
+    method: GET
+    json_attributes:
+      - pm10
+      - pm25
+      - pm10 AQI
+      - pm25 AQI
+      - time
+      - Overall AQI
+      - Overall AQI band
+    #value_template: 'OK'
+    value_template: '{{ value_json.time }}'
+  - platform: template
+    sensors:
+      aqi_internal_pm25_sensor:
+        value_template: '{{ states.sensor.aqi_internal_sensors.attributes["pm25"] }}'
+        #device_class:
+        unit_of_measurement: 'µg/m³'
+      aqi_internal_pm10_sensor:
+        value_template: '{{ states.sensor.aqi_internal_sensors.attributes["pm10"] }}'
+        #device_class:
+        unit_of_measurement: 'µg/m³'
+      aqi_internal_pm25aqi_sensor:
+        value_template: '{{ states.sensor.aqi_internal_sensors.attributes["pm25 AQI"] }}'
+        #device_class:
+        unit_of_measurement: 'µg/m³'
+      aqi_internal_pm10aqi_sensor:
+        value_template: '{{ states.sensor.aqi_internal_sensors.attributes["pm10 AQI"] }}'
+        #device_class:
+        unit_of_measurement: 'µg/m³'
