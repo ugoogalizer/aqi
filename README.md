@@ -6,7 +6,7 @@ Original inspiration from Hackernoon's https://hackernoon.com/how-to-measure-par
 
 Working
 * HTTP webpage displaying current sensor measu
-* OLED Disply (intended to display aqi result on local display to enable portable measurements)
+* OLED Display (intended to display aqi result on local display to enable portable measurements)
 * RESTful API (intended to access from Home Assistant (homeassistant.io))
 
 Not Working and on the TODO list: 
@@ -16,6 +16,7 @@ Not Working and on the TODO list:
 * Migrate sensor code from Python2 to Python3
 * Run code in python virtual environment
 * Tidy up repo removing unused artifacts
+* Publish to a public location, current plan is to http://sensor.community (also known as https://luftdaten.info/)
 
 
 
@@ -82,7 +83,7 @@ sudo python2 ./python/aqi.py
 
 On the raspberry pi from the local copy of the git repo, run: 
 ```
-sudo python3 ./python/disply.py
+sudo python3 ./python/display.py
 ```
 CTRL+C quits the display (and now turns off the display rather than leaves it to run and burn out your screen)
 
@@ -93,7 +94,6 @@ Run a simple RESTful interface using Python3 and Flask that returns the latest s
 
 ```
 sudo pip3 install flask
-sudo python3 ./python/restful_helloworld.py
 sudo python3 ./python/restful_api.py
 ```
 
@@ -111,3 +111,11 @@ API is available at: http://0.0.0.0:81/aqi/v1.0/aqi and returns JSON:
 ```
 
 Inspiration from this came from: https://auth0.com/blog/developing-restful-apis-with-python-and-flask/ and http://mattrichardson.com/Raspberry-Pi-Flask/
+
+
+## Optional Steps
+
+If you don't have a sensor yet and want to test without it, you can use the example data in the git repo by: 
+```
+sudo cp /var/www/html/api-example.json /var/www/html/aqi.json
+```
