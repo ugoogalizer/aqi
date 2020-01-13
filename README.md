@@ -27,15 +27,20 @@ Not Working and on the TODO list:
 ### Hardware Required: 
 
 * Raspberry Pi (In my case I used the Raspberry Pi Zero W, but should work with any version of Pi.) 
+
     <img src="./img/pi-zero-w-1.png" height="75">
 * An appropriate sized SD card - my card used about 1.5-2GB of it
 * SDS011 Particulate Sensor
+
     <img src="./img/sds011.jpg" height="75">
 * Raspberry Pi Header that you'll have to solder on, (or just get the Pi Zero WH model that has it pre-soldered)
+
     <img src="./img/header.jpg" height="75">
 * Adafruit 128x32 Mini OLED device (Optional, enables readings on the device without WiFi or web browser)
+
     <img src="./img/PiZeroOLED.jpg" height="75">
 * Micro USB Power Supply (for the Pi)
+
     <img src="./img/powersupply.jpg" height="75">
 
 ### Initial Software Setup
@@ -123,13 +128,13 @@ sudo python3 ./python/restful_api.py
 API is available at: http://0.0.0.0:81/aqi/v1.0/aqi and returns JSON: 
 ```json
 {
-  Overall AQI	1
-  Overall AQI band	"low"
-  pm10	70
-  pm10 AQI	1
-  pm25	300.5
-  pm25 AQI	1
-  time	"20.04.2019 17:04:05"
+  "pm25": 300.5, 
+  "pm10": 70.0, 
+  "time": "20.04.2019 17:04:05", 
+  "pm10 AQI": 1, 
+  "Overall AQI band": "low", 
+  "Overall AQI": 1, 
+  "pm25 AQI": 1
 }
 ```
 
