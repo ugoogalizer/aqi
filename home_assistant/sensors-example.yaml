@@ -19,18 +19,22 @@ sensor:
   - platform: template
     sensors:
       aqi_external_pm25_sensor:
+        friendly_name: 'Outside PM25'
         value_template: '{{ states.sensor.aqi_external_sensors.attributes["pm25"] }}'
         #device_class:
         unit_of_measurement: 'µg/m³'
       aqi_external_pm10_sensor:
+        friendly_name: 'Outside PM10'
         value_template: '{{ states.sensor.aqi_external_sensors.attributes["pm10"] }}'
         #device_class:
         unit_of_measurement: 'µg/m³'
       aqi_external_pm25aqi_sensor:
+        friendly_name: 'Outside PM25 AQI'
         value_template: '{{ states.sensor.aqi_external_sensors.attributes["pm25 AQI"] }}'
         #device_class:
         unit_of_measurement: 'µg/m³'
       aqi_external_pm10aqi_sensor:
+        friendly_name: 'Outside PM10 AQI'
         value_template: '{{ states.sensor.aqi_external_sensors.attributes["pm10 AQI"] }}'
         #device_class:
         unit_of_measurement: 'µg/m³'
@@ -52,18 +56,22 @@ sensor:
   - platform: template
     sensors:
       aqi_internal_pm25_sensor:
+        friendly_name: 'Inside PM25'
         value_template: '{{ states.sensor.aqi_internal_sensors.attributes["pm25"] }}'
         #device_class:
         unit_of_measurement: 'µg/m³'
       aqi_internal_pm10_sensor:
+        friendly_name: 'Inside PM10'
         value_template: '{{ states.sensor.aqi_internal_sensors.attributes["pm10"] }}'
         #device_class:
         unit_of_measurement: 'µg/m³'
       aqi_internal_pm25aqi_sensor:
+        friendly_name: 'Inside PM25 AQI'
         value_template: '{{ states.sensor.aqi_internal_sensors.attributes["pm25 AQI"] }}'
         #device_class:
         unit_of_measurement: 'µg/m³'
       aqi_internal_pm10aqi_sensor:
+        friendly_name: 'Inside PM10 AQI'
         value_template: '{{ states.sensor.aqi_internal_sensors.attributes["pm10 AQI"] }}'
         #device_class:
         unit_of_measurement: 'µg/m³'
