@@ -7,13 +7,13 @@ This package also displays AQI information on a Adafruit 128x32 Mini OLED device
 Original inspiration from Hackernoon's https://hackernoon.com/how-to-measure-particulate-matter-with-a-raspberry-pi-75faa470ec35 and the corresponding github: https://github.com/zefanja/aqi
 
 Working
-* HTTP webpage displaying current sensor measu
+* HTTP webpage displaying current sensor measurement 
 * OLED Display (intended to display aqi result on local display to enable portable measurements)
 * RESTful API (intended to access from Home Assistant (homeassistant.io))
+* Home Assistant yaml configuration to read from RESTful interface
 
 Not Working and on the TODO list: 
 * Sensor of PM10 and PM2.5 measurements (waiting postal service of sensor itself)
-* Home Assistant yaml configuration to read from RESTful interface
 * HTTP webpage (plot.ly) displaying historic sensor measurements
 * Migrate sensor code from Python2 to Python3
 * Run code in python virtual environment
@@ -26,12 +26,17 @@ Not Working and on the TODO list:
 
 ### Hardware Required: 
 
-* Raspberry Pi (In my case I used the Raspberry Pi Zero W, but should work with any version of Pi.)
-  ![](./img/PiZeroOLED.jpg)
-* Raspberry Pi Header that you'll have to solder on, (or just get the Pi Zero WH model that has it pre-soldered)
+* Raspberry Pi (In my case I used the Raspberry Pi Zero W, but should work with any version of Pi.) 
+  ![](./img/pi-zero-w-1.png)
+* An appropriate sized SD card - my card used about 1.5-2GB of it...
 * SDS011 Particulate Sensor
+  ![](./img/sds011.jpg)
+* Raspberry Pi Header that you'll have to solder on, (or just get the Pi Zero WH model that has it pre-soldered)
+  ![](./img/header.jpg)
 * Adafruit 128x32 Mini OLED device (Optional, enables readings on the device without WiFi or web browser)
+  ![](./img/PiZeroOLED.jpg)
 * Micro USE Power Supply (for the Pi)
+  ![](./img/powersupply.jpg)
 
 ### Initial Software Setup
 
@@ -130,5 +135,5 @@ Inspiration from this came from: https://auth0.com/blog/developing-restful-apis-
 
 If you don't have a sensor yet and want to test without it, you can use the example data in the git repo by: 
 ```
-sudo cp /var/www/html/api-example.json /var/www/html/aqi.json
+sudo cp ./html/aqi-example.json /var/www/html/aqi.json
 ```
