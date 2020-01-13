@@ -27,16 +27,16 @@ Not Working and on the TODO list:
 ### Hardware Required: 
 
 * Raspberry Pi (In my case I used the Raspberry Pi Zero W, but should work with any version of Pi.) 
- <img src="./img/pi-zero-w-1.png" height="75">
-* An appropriate sized SD card - my card used about 1.5-2GB of it...
+    <img src="./img/pi-zero-w-1.png" height="75">
+* An appropriate sized SD card - my card used about 1.5-2GB of it
 * SDS011 Particulate Sensor
- <img src="./img/sds011.jpg" height="75">
+    <img src="./img/sds011.jpg" height="75">
 * Raspberry Pi Header that you'll have to solder on, (or just get the Pi Zero WH model that has it pre-soldered)
- <img src="./img/header.jpg" height="75">
+    <img src="./img/header.jpg" height="75">
 * Adafruit 128x32 Mini OLED device (Optional, enables readings on the device without WiFi or web browser)
- <img src="./img/PiZeroOLED.jpg" height="75">
+    <img src="./img/PiZeroOLED.jpg" height="75">
 * Micro USB Power Supply (for the Pi)
- <img src="./img/powersupply.jpg" height="75">
+    <img src="./img/powersupply.jpg" height="75">
 
 ### Initial Software Setup
 
@@ -45,7 +45,7 @@ Not Working and on the TODO list:
 * Boot the Pi and SSH in.
 * Clone this (or a forked copy) of this repo to your pi: 
 ```
- git clone https://github.com/ugoogalizer/aqi-pi.git
+git clone https://github.com/ugoogalizer/aqi-pi.git
 ```
 * Copy the contents of the html directory into /var/www/html and install some python packages and a lightweight HTTP server
 ```
@@ -99,31 +99,29 @@ You should see something like:
 ## Run Everything
 
 ### Run the Sensor
-
+Captures data from the SDS011 sensor and writes it to the JSON file (/var/www/html/aqi.json) used by the consuming scripts.
 On the raspberry pi from the local copy of the git repo, run: 
-
 ```
 sudo python2 ./python/aqi.py
 ```
 
 ### Run the Display: 
-
+Displays the latest measurement from the sensor on the screen.
 On the raspberry pi from the local copy of the git repo, run: 
 ```
 sudo python3 ./python/display.py
 ```
 CTRL+C quits the display (and now turns off the display rather than leaves it to run and burn out your screen)
 
-## Run the RESTful Interface
-
+### Run the RESTful Interface
 Run a simple RESTful interface using Python3 and Flask that returns the latest sensor status in JSON format, intended for ingestion into Home Assistant (https://www.home-assistant.io/integrations/rest/) but could be ingested by other systems.
-
-```
+On the raspberry pi from the local copy of the git repo, run: 
+```bash
 sudo python3 ./python/restful_api.py
 ```
 
 API is available at: http://0.0.0.0:81/aqi/v1.0/aqi and returns JSON: 
-```
+```json
 {
   Overall AQI	1
   Overall AQI band	"low"
