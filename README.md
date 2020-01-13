@@ -41,11 +41,13 @@ Not Working and on the TODO list:
 ### Initial Software Setup
 
 * Install raspbian on the pi.
+* Optionally, configure the Pi to be headless by configuring wireless and enabling SSH  before inserting the SD Card into the Pi (https://www.raspberrypi.org/documentation/configuration/wireless/headless.md)
+* Boot the Pi and SSH in.
 * Clone this (or a forked copy) of this repo to your pi: 
 ```
  git clone https://github.com/ugoogalizer/aqi-pi.git
 ```
-* Copy the contents of the html directory into /var/www/html
+* Copy the contents of the html directory into /var/www/html and install some python packages and a lightweight HTTP server
 ```
 sudo cp ./html/* /var/www/html
 sudo apt install python-serial python-enum lighttpd
@@ -61,18 +63,25 @@ On the raspberry pi (as per https://learn.adafruit.com/adafruit-pioled-128x32-mi
 sudo apt-get install python3-pip
 sudo pip3 install adafruit-circuitpython-ssd1306
 sudo apt-get install python3-pil
+sudo pip3 install flask
 ```
 
 ### Enable I2C and Serial Port on Raspberry Pi
 As per: https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c
 
-Use raspi-config to enable I2C Interface and install required (testing?) software
+Use raspi-config to enable I2C Interface and install required testing software
 
 ```
 sudo apt-get install -y python-smbus i2c-tools
 sudo raspi-config
-<make changes>
-<also enable the serial interface while there (but don't enable login shell)>
+  > Interfacing Options
+    > I2C
+      > Enable: Yes
+      > Default: Yes
+    > Serial
+      > Enable: Yes
+      > Login Shell: No
+  > Finish
 sudo shutdown -h now
 ```
 
@@ -97,7 +106,7 @@ On the raspberry pi from the local copy of the git repo, run:
 sudo python2 ./python/aqi.py
 ```
 
-### Run the display stats script: 
+### Run the Display: 
 
 On the raspberry pi from the local copy of the git repo, run: 
 ```
@@ -105,30 +114,28 @@ sudo python3 ./python/display.py
 ```
 CTRL+C quits the display (and now turns off the display rather than leaves it to run and burn out your screen)
 
-## Creating the RESTful Interface
+## Run the RESTful Interface
 
-Run a simple RESTful interface using Python3 and Flask that returns the latest sensor status in JSON format, intended for ingestion into Home Assistant (https://www.home-assistant.io/integrations/rest/) but could be ingested by other sources.
-
+Run a simple RESTful interface using Python3 and Flask that returns the latest sensor status in JSON format, intended for ingestion into Home Assistant (https://www.home-assistant.io/integrations/rest/) but could be ingested by other systems.
 
 ```
-sudo pip3 install flask
 sudo python3 ./python/restful_api.py
 ```
 
 API is available at: http://0.0.0.0:81/aqi/v1.0/aqi and returns JSON: 
 ```
 {
-  "Overall AQI": 1,
-  "Overall AQI band": "low",
-  "PM10 AQI": 1,
-  "PM2.5 AQI": 1,
-  "pm10": 70.0,
-  "pm25": 301.5,
-  "time": "08.01.2020 22:04:05"
+  Overall AQI	1
+  Overall AQI band	"low"
+  pm10	70
+  pm10 AQI	1
+  pm25	300.5
+  pm25 AQI	1
+  time	"20.04.2019 17:04:05"
 }
 ```
 
-Inspiration from this came from: https://auth0.com/blog/developing-restful-apis-with-python-and-flask/ and http://mattrichardson.com/Raspberry-Pi-Flask/
+Inspiration for this implementation came from: https://auth0.com/blog/developing-restful-apis-with-python-and-flask/ and http://mattrichardson.com/Raspberry-Pi-Flask/
 
 
 ## Optional Steps
