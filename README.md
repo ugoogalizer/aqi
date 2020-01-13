@@ -27,16 +27,16 @@ Not Working and on the TODO list:
 ### Hardware Required: 
 
 * Raspberry Pi (In my case I used the Raspberry Pi Zero W, but should work with any version of Pi.) 
-  ![](./img/pi-zero-w-1.png)
+  ![](./img/pi-zero-w-1.png =250x)
 * An appropriate sized SD card - my card used about 1.5-2GB of it...
 * SDS011 Particulate Sensor
-  ![](./img/sds011.jpg)
+  ![](./img/sds011.jpg =250x)
 * Raspberry Pi Header that you'll have to solder on, (or just get the Pi Zero WH model that has it pre-soldered)
-  ![](./img/header.jpg)
+  ![](./img/header.jpg =250x)
 * Adafruit 128x32 Mini OLED device (Optional, enables readings on the device without WiFi or web browser)
-  ![](./img/PiZeroOLED.jpg)
-* Micro USE Power Supply (for the Pi)
-  ![](./img/powersupply.jpg)
+  ![](./img/PiZeroOLED.jpg =250x)
+* Micro USB Power Supply (for the Pi)
+  ![](./img/powersupply.jpg =250x)
 
 ### Initial Software Setup
 
