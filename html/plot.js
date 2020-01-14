@@ -3,27 +3,28 @@
 
 
 
-//var xmlhttp = new XMLHttpRequest();
-//xmlhttp.onreadystatechange = function() {
-//    if (this.readyState == 4 && this.status == 200) {
-//        var myArr = JSON.parse(this.responseText);
-//        PlotGraph(myArr);
-//    }
-//};
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        var myArr = JSON.parse(this.responseText);
+        PlotGraph(myArr);
+    }
+};
 
 //xmlhttp.open("GET", "http://192.168.0.170/aqi.json", true);
-//xmlhttp.send();
+xmlhttp.open("GET", "aqi.json", true);
+xmlhttp.send();
 
 
 //<script type="text/javascript">
-function read_json() {
-    $.getJSON("/aqi.json", function(data) {
-        alert("My data: " + data["mydata"]);
-        $.each(data["prime"], function(idx,prime) {
-            alert("Prime number: " + prime);
-        });
-    });
-}
+//function read_json() {
+//    $.getJSON("/aqi.json", function(data) {
+//        alert("My data: " + data["mydata"]);
+//        $.each(data["prime"], function(idx,prime) {
+//            alert("Prime number: " + prime);
+//        });
+//    });
+//}
 //    </script>
 
 function PlotGraph(data) {
