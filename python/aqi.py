@@ -3,7 +3,7 @@
 # "DATASHEET": http://cl.ly/ekot
 # https://gist.github.com/kadamski/92653913a53baf9dd1a8
 from __future__ import print_function
-import serial, struct, sys, time, json
+import serial, struct, sys, time, json, atexit
 import logging
 from os.path import exists
 
@@ -109,9 +109,12 @@ def cmd_set_id(id):
 
 
 #function to disbale the sensor on exit
-atexit.register(disableDisplay)
+
+#function to clear the screen on exit
+def cleanupOnExit():
     cmd_set_mode(0)
     cmd_set_sleep()
+atexit.register(cleanupOnExit)
 
 if __name__ == "__main__":
     initiate_json('/var/www/html/aqi.json')
@@ -122,6 +125,7 @@ if __name__ == "__main__":
         logging.info('collection is starting')
         cmd_set_sleep(0)
         cmd_set_mode(1)
+        print("Taking 15 measurements to ensure a stable measurement")
         for t in range(15):
             values = cmd_query_data()
             if values is not None:
