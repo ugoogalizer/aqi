@@ -14,7 +14,9 @@ Working
 * Home Assistant yaml configuration to read from RESTful interface
 
 Not Working and on the TODO list: 
+* Autostart of sensor and rest API (optional screen - don't want it on all the time..)
 * HTTP webpage (plot.ly) displaying historic sensor measurements
+* Understand and fix if neccesary the AQI definitions
 * Migrate sensor code from Python2 to Python3
 * Run code in python virtual environment
 * Tidy up repo removing unused artifacts
@@ -68,9 +70,9 @@ Don't plug in the OLED display to your pi yet...
 On the raspberry pi (as per https://learn.adafruit.com/adafruit-pioled-128x32-mini-oled-for-raspberry-pi/usage)
 ```
 sudo apt-get install python3-pip
-sudo pip3 install adafruit-circuitpython-ssd1306
+sudo pip3 install adafruit-circuitpython-ssd1306 # Required for the display
 sudo apt-get install python3-pil
-sudo pip3 install flask
+sudo pip3 install flask # for the REST API
 ```
 
 ### Enable I2C and Serial Port on Raspberry Pi
