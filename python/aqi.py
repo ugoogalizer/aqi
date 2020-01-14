@@ -107,6 +107,12 @@ def cmd_set_id(id):
     ser.write(construct_command(CMD_DEVICE_ID, [0]*10+[id_l, id_h]))
     read_response()
 
+
+#function to disbale the sensor on exit
+atexit.register(disableDisplay)
+    cmd_set_mode(0)
+    cmd_set_sleep()
+
 if __name__ == "__main__":
     initiate_json('/var/www/html/aqi.json')
     logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p',
