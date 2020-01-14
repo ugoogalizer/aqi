@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>AQI</title>
     <script src="aqi.js"></script>
+    <script src="plotly-latest.min.js"></script>
+    <script  src="plot.js"></script>
     <link rel='stylesheet' href='style.css'>
   </head>
   <body onload="getData()">
@@ -21,6 +23,24 @@
           <div class='aqi' id="aqiPm10"></div>
           <div class='pm-label' id="pm10"></div>
       </div>
+
+      <div class="container">
+        <div class='aqi-container' id="containerPm25">
+            <div class='aqi-label'>AQI (PM2.5)</div>
+            <div class='aqi' id="aqiPm25"></div>
+            <div class='pm-label' id="pm25"></div>
+        </div>
+        <div class='aqi-container' id="containerPm10">
+            <div class='aqi-label'>AQI (PM10)</div>
+            <div class='aqi' id="aqiPm10"></div>
+            <div class='pm-label' id="pm10"></div>
+        </div>
+        <p class='time' id="time"></p>
+      </div>
+
+      
+      <div id="AQIplot"></div>
+      
       <div>
         RESTful API Interface found on port 81. (i.e.: <a href="http://0.0.0.0:81/aqi/v1.0/aqi">http://0.0.0.0:81/aqi/v1.0/aqi</a> )
       </div>
