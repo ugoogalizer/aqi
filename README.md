@@ -1,6 +1,6 @@
 # aqi-pi
 Measure AQI based on PM2.5 or PM10 with a Raspberry Pi and a SDS011 particle sensor. 
-This package also displays AQI information on a Adafruit 128x32 Mini OLED device () attached to the Pi. This allows the device to become portable when run from a portable USB power supply and not require WiFi or access to a web browser to see the results.
+This package also displays AQI information on a Adafruit 128x32 Mini OLED device attached to the Pi. This allows the device to become portable when run from a portable USB power supply and not require WiFi or access to a web browser to see the results.
 
 
 
@@ -20,6 +20,7 @@ Not Working and on the TODO list:
 * Tidy up repo removing unused artifacts
 * Publish to a public location, current plan is to http://sensor.community (also known as https://luftdaten.info/)
 * Use a DHT11 or DHT22 to measure temp and humidity too
+* Design a case for the devices, similar to: https://www.thingiverse.com/thing:3342804
 
 
 ## Pre-Requisitites
@@ -138,7 +139,7 @@ API is available at: http://0.0.0.0:81/aqi/v1.0/aqi and returns JSON:
 }
 ```
 
-Inspiration for this implementation came from: https://auth0.com/blog/developing-restful-apis-with-python-and-flask/ and http://mattrichardson.com/Raspberry-Pi-Flask/
+Inspiration for this REST implementation came from: https://auth0.com/blog/developing-restful-apis-with-python-and-flask/ and http://mattrichardson.com/Raspberry-Pi-Flask/
 
 
 ## Optional Steps
