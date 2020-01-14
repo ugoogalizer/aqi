@@ -49,7 +49,7 @@ Not Working and on the TODO list:
 
 ### Initial Software Setup
 
-* Install raspbian on the pi.
+* Install raspbian on the pi (this is better than NOOBS I believe because you can setup headless easier).
 * Optionally, configure the Pi to be headless by configuring wireless and enabling SSH  before inserting the SD Card into the Pi (https://www.raspberrypi.org/documentation/configuration/wireless/headless.md)
 * Boot the Pi and SSH in.
 * Clone this (or a forked copy) of this repo to your pi: 
