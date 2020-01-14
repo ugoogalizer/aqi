@@ -18,8 +18,8 @@ MODE_ACTIVE = 0
 MODE_QUERY = 1
 
 ser = serial.Serial()
-# ser.port = "/dev/ttyUSB0"
-ser.port = "/dev/ttyAMA0"
+ser.port = "/dev/ttyUSB0"
+# ser.port = "/dev/ttyAMA0"
 ser.baudrate = 9600
 
 ser.open()
@@ -29,7 +29,7 @@ byte, data = 0, ""
 
 def initiate_json(file_path):
     """
-    Check to see if the aqi.json exists in the html direcotry and add it if not
+    Check to see if the aqi.json exists in the html directory and add it if not
     """
     if not exists(file_path):
         with open(file_path,"w") as fresh_file:
@@ -148,8 +148,11 @@ if __name__ == "__main__":
         with open('/var/www/html/aqi.json', 'w') as outfile:
             json.dump(data, outfile)
 
-        print("Going to sleep for 5min...")
-        logging.info('sleeping for 5 minutes')
+        #print("Going to sleep for 5min...")
+        print("Going to sleep for 1min...")
+        #logging.info('sleeping for 5 minutes')
+        logging.info('sleeping for 1 minute')
         cmd_set_mode(0)
         cmd_set_sleep()
-        time.sleep(300)
+        #time.sleep(300)
+        time.sleep(60)
