@@ -41,21 +41,7 @@
       
       <div id="AQIplot"></div>
 
-      <!-- Plotly.js -->
-      <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-      <script>
-        // From: https://www.w3schools.com/js/js_json_parse.asp
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function() {
-            if (this.readyState == 4 && this.status == 200) {
-                var plotly_vars = JSON.parse(this.responseText);
-                Plotly.newPlot('plotly-chart', plotly_vars['data'], plotly_vars['layout']);
-            }
-        };
-        xmlhttp.open("GET", "aqi.json", true);
-        xmlhttp.send(); 
-          
-      </script>
+    
 
       
       <div>

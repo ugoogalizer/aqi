@@ -28,7 +28,6 @@ xmlhttp.send();
 //    </script>
 
 function PlotGraph(data) {
-  read_json();
   let trace1 = {
     x: [],
     y: [],
