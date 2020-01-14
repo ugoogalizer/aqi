@@ -7,13 +7,13 @@ This package also displays AQI information on a Adafruit 128x32 Mini OLED device
 Original inspiration from Hackernoon's https://hackernoon.com/how-to-measure-particulate-matter-with-a-raspberry-pi-75faa470ec35 and the corresponding github: https://github.com/zefanja/aqi
 
 Working
+* Sensor of PM10 and PM2.5 measurements sensing and writing measurements to JSON file
 * HTTP webpage displaying current sensor measurement 
 * OLED Display (intended to display aqi result on local display to enable portable measurements)
 * RESTful API (intended to access from Home Assistant (homeassistant.io))
 * Home Assistant yaml configuration to read from RESTful interface
 
 Not Working and on the TODO list: 
-* Sensor of PM10 and PM2.5 measurements (waiting postal service of sensor itself)
 * HTTP webpage (plot.ly) displaying historic sensor measurements
 * Migrate sensor code from Python2 to Python3
 * Run code in python virtual environment
@@ -21,6 +21,7 @@ Not Working and on the TODO list:
 * Publish to a public location, current plan is to http://sensor.community (also known as https://luftdaten.info/)
 * Use a DHT11 or DHT22 to measure temp and humidity too
 * Design a case for the devices, similar to: https://www.thingiverse.com/thing:3342804
+* Abstract the serial port location using Watchdog: https://pypi.org/project/watchdog/
 
 
 ## Pre-Requisitites
