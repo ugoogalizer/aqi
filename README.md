@@ -15,13 +15,14 @@ Working
 * Autostart of sensor and rest API (optional screen - don't want it on all the time..)
 
 Not Working and on the TODO list: 
+* Handle malformed sensor readings - is possibly crashing the display?
 * HTTP webpage (plot.ly) displaying historic sensor measurements
 * Reduce reliance on sudo to run Python
 * Understand and fix if neccesary the AQI definitions
 * Migrate sensor code from Python2 to Python3
 * Run code in python virtual environment
 * Tidy up repo removing unused artifacts
-* Publish to a public location, current plan is to http://sensor.community (also known as https://luftdaten.info/)
+* Publish to a public location, current plan is to http://sensor.community (also known as https://luftdaten.info/ - https://meine.luftdaten.info/)
 * Use a DHT11 or DHT22 to measure temp and humidity too
 * Design a case for the devices, similar to: https://www.thingiverse.com/thing:3342804
 * Abstract the serial port location using Watchdog: https://pypi.org/project/watchdog/
