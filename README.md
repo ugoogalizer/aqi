@@ -144,6 +144,49 @@ API is available at: http://0.0.0.0:81/aqi/v1.0/aqi and returns JSON:
 
 Inspiration for this REST implementation came from: https://auth0.com/blog/developing-restful-apis-with-python-and-flask/ and http://mattrichardson.com/Raspberry-Pi-Flask/
 
+## Autostarting with Systemd
+
+Copy the systemd service definitions to the system and set permissions: 
+
+```
+sudo cp ./systemd/aqi_sensor.service ./systemd/aqi_display.service ./systemd/aqi_restful_api.service /etc/systemd/system/
+sudo chmod 644 /etc/systemd/system/aqi_sensor.service /etc/systemd/system/aqi_display.service /etc/systemd/system/aqi_restful_api.service
+
+```
+
+UNKNOWN - do we need to reload systemd? 
+
+
+Start / Stop / Status for each service:
+
+```
+sudo systemctl start aqi_sensor
+sudo systemctl stop aqi_sensor
+sudo systemctl status aqi_sensor
+sudo systemctl start aqi_display
+sudo systemctl stop aqi_display
+sudo systemctl status aqi_display
+sudo systemctl start aqi_restful_api
+sudo systemctl stop aqi_restful_api
+sudo systemctl status aqi_restful_api
+
+```
+Enable the services on boot:
+```
+sudo systemctl enable aqi_sensor
+sudo systemctl enable aqi_display
+sudo systemctl enable aqi_restful_api
+
+```
+Disable the services on boot: 
+```
+sudo systemctl disable aqi_sensor
+sudo systemctl disable aqi_display
+sudo systemctl disable aqi_restful_api
+
+```
+
+
 
 ## Optional Steps
 
