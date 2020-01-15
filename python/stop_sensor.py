@@ -1,6 +1,6 @@
 #!/usr/bin/python
-#Script to manually turn off sensor if required.
 # -*- coding=utf-8 -*-
+#Script to manually turn off sensor if required.
 # "DATASHEET": http://cl.ly/ekot
 # https://gist.github.com/kadamski/92653913a53baf9dd1a8
 from __future__ import print_function

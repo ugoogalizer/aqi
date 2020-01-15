@@ -194,3 +194,11 @@ If you don't have a sensor yet and want to test without it, you can use the exam
 ```
 sudo cp ./html/aqi-example.json /var/www/html/aqi.json
 ```
+
+
+### Turning off the Sensor Manually
+The sensor has a limited life,  is slightly noisy and appears to turn on by default on power on. If you want to turn it off you can: 
+
+```
+sudo python2 ./python/stop_sensor.py
+```
