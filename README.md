@@ -12,10 +12,11 @@ Working
 * OLED Display (intended to display aqi result on local display to enable portable measurements)
 * RESTful API (intended to access from Home Assistant (homeassistant.io))
 * Home Assistant yaml configuration to read from RESTful interface
+* Autostart of sensor and rest API (optional screen - don't want it on all the time..)
 
 Not Working and on the TODO list: 
-* Autostart of sensor and rest API (optional screen - don't want it on all the time..)
 * HTTP webpage (plot.ly) displaying historic sensor measurements
+* Reduce reliance on sudo to run Python
 * Understand and fix if neccesary the AQI definitions
 * Migrate sensor code from Python2 to Python3
 * Run code in python virtual environment
@@ -78,7 +79,7 @@ sudo pip3 install flask # for the REST API
 ### Enable I2C and Serial Port on Raspberry Pi
 As per: https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c
 
-Use raspi-config to enable I2C Interface and install required testing software
+Use install required testing software, use raspi-config to enable I2C Interface and (optionally) use raspi-config to update localisation options
 
 ```
 sudo apt-get install -y python-smbus i2c-tools
@@ -90,6 +91,11 @@ sudo raspi-config
     > Serial
       > Enable: Yes
       > Login Shell: No
+  > Localisation
+    > Change Locale
+      > en_AU.UTF-8 (or whereever you are)
+    > Change Timezone
+      > (Whereever you are)
   > Finish
 sudo shutdown -h now
 ```
@@ -147,46 +153,47 @@ Inspiration for this REST implementation came from: https://auth0.com/blog/devel
 ## Autostarting with Systemd
 
 Copy the systemd service definitions to the system and set permissions: 
+NOTE! These service definitions hard code where to find the git repo, if not in the home dir of pi user, then you'll need to update the definitions.
+
 
 ```
 sudo cp ./systemd/aqi_sensor.service ./systemd/aqi_display.service ./systemd/aqi_restful_api.service /etc/systemd/system/
 sudo chmod 644 /etc/systemd/system/aqi_sensor.service /etc/systemd/system/aqi_display.service /etc/systemd/system/aqi_restful_api.service
 
 ```
-
-UNKNOWN - do we need to reload systemd? 
-
-
-Start / Stop / Status for each service:
-
-```
-sudo systemctl start aqi_sensor
-sudo systemctl stop aqi_sensor
-sudo systemctl status aqi_sensor
-sudo systemctl start aqi_display
-sudo systemctl stop aqi_display
-sudo systemctl status aqi_display
-sudo systemctl start aqi_restful_api
-sudo systemctl stop aqi_restful_api
-sudo systemctl status aqi_restful_api
-
-```
-Enable the services on boot:
+To enable the services on boot:
 ```
 sudo systemctl enable aqi_sensor
 sudo systemctl enable aqi_display
 sudo systemctl enable aqi_restful_api
+```
+
+To manually Start / Stop / Restart / Status for each service:
 
 ```
+sudo systemctl start aqi_sensor
+sudo systemctl start aqi_display
+sudo systemctl start aqi_restful_api
+
+sudo systemctl stop aqi_sensor
+sudo systemctl stop aqi_display
+sudo systemctl stop aqi_restful_api
+
+sudo systemctl restart aqi_sensor
+sudo systemctl restart aqi_display
+sudo systemctl restart aqi_restful_api
+
+sudo systemctl status aqi_sensor
+sudo systemctl status aqi_display
+sudo systemctl status aqi_restful_api
+```
+
 Disable the services on boot: 
 ```
 sudo systemctl disable aqi_sensor
 sudo systemctl disable aqi_display
 sudo systemctl disable aqi_restful_api
-
 ```
-
-
 
 ## Optional Steps
 
