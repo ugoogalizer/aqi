@@ -109,15 +109,9 @@ def cmd_set_id(id):
     read_response()
 
 
-#function to disbale the sensor on exit
-
-#function to clear the screen on exit
-def cleanupOnExit():
-    cmd_set_mode(0)
-    cmd_set_sleep()
-atexit.register(cleanupOnExit)
 
 if __name__ == "__main__":
     print("Sleeping sensor...")
-    cleanupOnExit
+    cmd_set_mode(0)
+    cmd_set_sleep()
     
