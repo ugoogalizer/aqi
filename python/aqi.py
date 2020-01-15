@@ -158,11 +158,11 @@ if __name__ == "__main__":
         with open('/var/www/html/aqi.json', 'w') as outfile:
             json.dump(data, outfile)
 
-        #print("Going to sleep for 5min...")
-        print("Going to sleep for 1min...")
-        #logging.info('sleeping for 5 minutes')
-        logging.info('sleeping for 1 minute')
+        print("Going to sleep for 5min...")
+        #print("Going to sleep for 1min...")
+        logging.info('sleeping for 5 minutes')
+        #logging.info('sleeping for 1 minute')
         cmd_set_mode(0)
         cmd_set_sleep()
-        #time.sleep(300)
-        time.sleep(60)
+        time.sleep(300)
+        #time.sleep(60)
