@@ -24,14 +24,14 @@ stable_measurements = 15
 
 # pi zero w
 # ser.port = "/dev/ttyAMA0"
-# ser.port = "/dev/ttyUSB0"
-# json_path='/var/www/html/aqi.json'
-# csv_path ='/var/www/html/aqi.csv'
+ser.port = "/dev/ttyUSB0"
+json_path='/var/www/html/aqi.json'
+csv_path ='/var/www/html/aqi.csv'
 
 # win debug
-ser.port = "COM7"
-json_path = '../html/aqi.json'
-csv_path = "../html/aqi.csv"
+#ser.port = "COM7"
+#json_path = '../html/aqi.json'
+#csv_path = "../html/aqi.csv"
 
 ser.baudrate = 9600
 

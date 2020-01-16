@@ -4,7 +4,7 @@
 
  [Service]
  Type=idle
- ExecStart=/usr/bin/python2 /home/pi/aqi-pi/python/aqi.py
+ ExecStart=/usr/bin/python2 /home/pi/aqi-pi/python/aqi.py > /var/log/aqi_sensor.log 2>&1
 
  [Install]
  WantedBy=multi-user.target
