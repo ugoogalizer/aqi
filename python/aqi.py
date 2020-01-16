@@ -18,8 +18,21 @@ MODE_ACTIVE = 0
 MODE_QUERY = 1
 
 ser = serial.Serial()
-ser.port = "/dev/ttyUSB0"
+
+sleep_sec = 60 #1 minute
+stable_measurements = 15
+
+# pi zero w
 # ser.port = "/dev/ttyAMA0"
+# ser.port = "/dev/ttyUSB0"
+# json_path='/var/www/html/aqi.json'
+# csv_path ='/var/www/html/aqi.csv'
+
+# win debug
+ser.port = "COM7"
+json_path = '../html/aqi.json'
+csv_path = "../html/aqi.csv"
+
 ser.baudrate = 9600
 
 ser.open()
@@ -117,52 +130,68 @@ def cleanupOnExit():
 atexit.register(cleanupOnExit)
 
 if __name__ == "__main__":
-    initiate_json('/var/www/html/aqi.json')
+    #initiate_json()
+    initiate_json(json_path)
+    
     logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p',
                         filename='aqi.log', level=logging.DEBUG)
     logging.info('AQI Monitor has been started!')
-    while True:
-        logging.info('collection is starting')
-        cmd_set_sleep(0)
-        cmd_set_mode(1)
-        print("Taking 15 measurements to ensure a stable measurement")
-        for t in range(15):
-            values = cmd_query_data()
-            if values is not None:
-                print("PM2.5: ", values[0], ", PM10: ", values[1])
-                logging.debug("values: PM2.5: {0}, PM10: {1}".format(values[0], values[1]))
-                time.sleep(2)
+    try:
+        while True:
+            logging.info('collection is starting')
+            cmd_set_sleep(0)
+            cmd_set_mode(1)
+            print("Taking %s measurements to ensure a stable measurement" % str(stable_measurements))
+            for t in range(stable_measurements):
+                values = cmd_query_data()
+                if values is not None and len(values)>0:
+                    print("PM2.5: ", values[0], ", PM10: ", values[1])
+                    logging.debug("values: PM2.5: {0}, PM10: {1}".format(values[0], values[1]))
+                    time.sleep(2)
+                else:
+                    print("no reading, will retry")
+                    time.sleep(5)
+                    t -= 1
 
-        # open stored data
-        logging.debug('Opening aqi.json')
-        with open('/var/www/html/aqi.json') as json_data:
-            data = json.load(json_data)
+            if values is not None and len(values)>0:
+                # open stored data
+                logging.debug('Opening aqi.json')
+                with open(json_path) as json_data:
+                    data = json.load(json_data)
 
-        # csv
-        #logging.debug('Opening aqi.csv')
-        #csv_file = open('/var/www/html/aqi.csv', 'a')
-        #csv_file.write("{0},{1},{2}\n".format(values[0],values[1],time.strftime("%d.%m.%Y %H:%M:%S")))
-        #csv_file.close()
-        #logging.debug('Closed aqi.csv')
+                # csv
+                #logging.debug('Opening aqi.csv')
+                #csv_file = open(csv_path, 'a')
+                #csv_file.write("{0},{1},{2}\n".format(values[0],values[1],time.strftime("%d.%m.%Y %H:%M:%S")))
+                #csv_file.close()
+                #logging.debug('Closed aqi.csv')
 
-        # check if length is more than 10000 and delete first element
-        if len(data) > 10000:
-            data.pop(0)
+                # check if length is more than 10000 and delete first element
+                if len(data) > 10000:
+                    data.pop(0)
 
-        # append new values
-        # data.append({'pm25': values[0], 'pm10': values[1], 'time': time.strftime("%d.%m.%Y %H:%M:%S")})
-        # Using ctime() instead of strftime().  
-        data.append({'pm25': values[0], 'pm10': values[1], 'time': time.ctime()})
+                # append new values
+                # data.append({'pm25': values[0], 'pm10': values[1], 'time': time.strftime("%d.%m.%Y %H:%M:%S")})
+                # Using ctime() instead of strftime().  
+                newdata = { 'time': time.ctime()}
+                if len(values)>0:
+                    newdata['pm25'] = values[0]
+                    newdata['pm10'] = values[1]
+                #data.append({'pm25': values[0], 'pm10': values[1], 'time': time.ctime()})
+                data.append(newdata) #{'pm25': values[0], 'pm10': values[1], 'time': time.ctime()})
 
-        # save it
-        with open('/var/www/html/aqi.json', 'w') as outfile:
-            json.dump(data, outfile)
+                # save it
+                with open(json_path, 'w') as outfile:
+                    json.dump(data, outfile)
 
-        print("Going to sleep for 5min...")
-        #print("Going to sleep for 1min...")
-        logging.info('sleeping for 5 minutes')
-        #logging.info('sleeping for 1 minute')
-        cmd_set_mode(0)
-        cmd_set_sleep()
-        time.sleep(300)
-        #time.sleep(60)
+            #print("Going to sleep for 5min...")
+            print("Going to sleep for %s seconds..." % str(sleep_sec))
+            #logging.info('sleeping for 5 minutes')
+            logging.info('sleeping for %s seconds' % str(sleep_sec))
+            cmd_set_mode(0)
+            cmd_set_sleep()
+            #time.sleep(300)
+            time.sleep(sleep_sec)
+    except KeyboardInterrupt:
+        pass
+
