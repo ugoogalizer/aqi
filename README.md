@@ -49,15 +49,25 @@ Not Working and on the TODO list:
 * Install raspbian on the pi.
 * Optionally, configure the Pi to be headless by configuring wireless and enabling SSH  before inserting the SD Card into the Pi (https://www.raspberrypi.org/documentation/configuration/wireless/headless.md)
 * Boot the Pi and SSH in.
+* Depending on your raspbian image you may need to install git and other tools (python 2 and 3) first
+```
+sudo apt update
+sudo apt install git python-pip python3-pip
+```
 * Clone this (or a forked copy) of this repo to your pi: 
 ```
 git clone https://github.com/ugoogalizer/aqi-pi.git
+cd aqi-pi
 ```
-* Copy the contents of the html directory into /var/www/html and install some python packages and a lightweight HTTP server
+### Web Server
+
+* Copy the contents of the html directory into /var/www/html and install some python2 packages and a lightweight HTTP server
 ```
+sudo apt install lighttpd python-serial python-enum
 sudo cp ./html/* /var/www/html
-sudo apt install python-serial python-enum lighttpd
 ```
+TODO migrate python 2 scripts to python 3
+TODO setup requirements.txt to automatically collect python prerequisites
 
 ## OLED Display Setup
 
@@ -66,7 +76,6 @@ Don't plug in the OLED display to your pi yet...
 ### Install Python Libs
 On the raspberry pi (as per https://learn.adafruit.com/adafruit-pioled-128x32-mini-oled-for-raspberry-pi/usage)
 ```
-sudo apt-get install python3-pip
 sudo pip3 install adafruit-circuitpython-ssd1306
 sudo apt-get install python3-pil
 sudo pip3 install flask
@@ -110,6 +119,7 @@ On the raspberry pi from the local copy of the git repo, run:
 ```
 sudo python2 ./python/aqi.py
 ```
+*NB awi.py is currently written for python2 and is incompatible with python3*
 
 ### Run the Display: 
 Displays the latest measurement from the sensor on the screen.
