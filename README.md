@@ -171,6 +171,8 @@ NOTE! These service definitions hard code where to find the git repo, if not in 
 ```
 sudo cp ./systemd/aqi_sensor.service ./systemd/aqi_display.service ./systemd/aqi_restful_api.service /etc/systemd/system/
 sudo chmod 644 /etc/systemd/system/aqi_sensor.service /etc/systemd/system/aqi_display.service /etc/systemd/system/aqi_restful_api.service
+mkdir ./log
+sudo systemctl daemon-reload
 
 ```
 To enable the services on boot:
