@@ -160,11 +160,11 @@ if __name__ == "__main__":
                     data = json.load(json_data)
 
                 # csv
-                logging.debug('Opening aqi.csv')
-                csv_file = open(csv_path, 'a')
-                csv_file.write("{0},{1},{2}\n".format(values[0],values[1],time.strftime("%d.%m.%Y %H:%M:%S")))
-                csv_file.close()
-                logging.debug('Closed aqi.csv')
+                #logging.debug('Opening aqi.csv')
+                #csv_file = open(csv_path, 'a')
+                #csv_file.write("{0},{1},{2}\n".format(values[0],values[1],time.strftime("%d.%m.%Y %H:%M:%S")))
+                #csv_file.close()
+                #logging.debug('Closed aqi.csv')
 
                 # check if length is more than 10000 and delete first element
                 if len(data) > 10000:
@@ -194,3 +194,4 @@ if __name__ == "__main__":
             time.sleep(sleep_sec)
     except KeyboardInterrupt:
         pass
+
