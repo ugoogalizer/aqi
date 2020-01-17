@@ -4,7 +4,9 @@
 
  [Service]
  Type=idle
- ExecStart=/usr/bin/python3 -u /home/pi/aqi-pi/python/display.py > /home/pi/aqi-pi/log/aqi_display.log 2>&1
+ ExecStart=/usr/bin/python3 -u /home/pi/aqi-pi/python/display.py
+ StandardOutput=file:/home/pi/aqi-pi/log/aqi_sensor.log
+ StandardError=file:/home/pi/aqi-pi/log/aqi_sensor.log
 
  [Install]
  WantedBy=multi-user.target
