@@ -19,7 +19,7 @@ MODE_QUERY = 1
 
 ser = serial.Serial()
 
-sleep_sec = 60 #1 minute
+sleep_sec = 300 #1 minute
 stable_measurements = 15
 
 # pi zero w
