@@ -248,9 +248,29 @@ sudo python3 ./python/sensor3.py
 ### Reduce Power Consumption on the Pi Zero: 
 
 Disable HDMI: 
-edit /etc/rc.local and add the following line after the " # By default this script does nothing." line: 
+edit /etc/rc.local 
+```
+sudo vi /etc/rc.local
+```
+
+and add the following line after the " # By default this script does nothing." line: 
 ```
 #Disable HDMI
 /usr/bin/tvservice -o
+
+```
+
+
+Disable the ACT LED on the Pi Zero, edit ```/boot/config.txt``` file and reboot:
+
+``` 
+sudo vi /boot/config.txt
+```
+Add the following lines at the end: 
+
+```
+# Disable the ACT LED on the Pi Zero.
+dtparam=act_led_trigger=none
+dtparam=act_led_activelow=on
 
 ```
