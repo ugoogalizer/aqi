@@ -70,7 +70,10 @@ cd aqi-pi
 
 * Copy the contents of the html directory into /var/www/html and install some python2 packages and a lightweight HTTP server
 ```
-sudo apt install lighttpd ##### python-serial python-enum
+sudo apt install lighttpd ##### 
+sudo apt install python-serial  ### Used by the py2 version.
+
+#####python-enum
 sudo cp ./html/* /var/www/html
 ```
 TODO migrate python 2 scripts to python 3
