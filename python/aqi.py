@@ -142,8 +142,11 @@ if __name__ == "__main__":
             print("Taking %s measurements to ensure a stable measurement" % str(stable_measurements))
             for t in range(stable_measurements):
                 values = cmd_query_data()
+                
+                # create timestamp
+                # aqi_tsp = datetime.now(tzlocal()).isoformat()      
                 if values is not None and len(values)>0:
-                    print("PM2.5: ", values[0], ", PM10: ", values[1])
+                    print(aqi_tsp,", PM2.5: ", values[0], ", PM10: ", values[1])
                     logging.debug("values: PM2.5: {0}, PM10: {1}".format(values[0], values[1]))
                     time.sleep(2)
                 else:
@@ -154,7 +157,7 @@ if __name__ == "__main__":
             if values is not None and len(values)>0:
                 # open stored data
                 logging.debug('Opening aqi.json')
-                with open(json_path) as json_data:
+                with open(json_path,'r') as json_data:
                     data = json.load(json_data)
 
                 # csv

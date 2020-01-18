@@ -223,3 +223,34 @@ The sensor has a limited life,  is slightly noisy and appears to turn on by defa
 ```
 sudo python2 ./python/stop_sensor.py
 ```
+
+### Directly connect Sensor to Pi Header's UART rather than using the USB to UART adapter
+
+Potential option to remove the dongle - would need to do something smart to not clash with the 5V requirement for the display
+
+https://dev.to/jeikabu/raspberry-pi-pm2510-air-quality-monitor-2ede
+https://pinout.xyz/pinout/uart#
+https://www.raspberrypi.org/documentation/configuration/uart.md
+
+https://cdn-reichelt.de/documents/datenblatt/X200/SDS011-DATASHEET.pdf
+
+
+
+### Python3 Sensor: 
+
+```
+
+sudo pip3 install py-sds011 python-dateutil
+sudo python3 ./python/sensor3.py
+
+```
+
+### Reduce Power Consumption on the Pi Zero: 
+
+Disable HDMI: 
+edit /etc/rc.local and add the following line after the " # By default this script does nothing." line: 
+```
+#Disable HDMI
+/usr/bin/tvservice -o
+
+```
