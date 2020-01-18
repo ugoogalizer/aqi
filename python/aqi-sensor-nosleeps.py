@@ -38,7 +38,7 @@ def initiate_json(file_path):
 if __name__ == '__main__':
 
     sensor = SDS011(port,baudrate=baudrate,use_query_mode=True)
-    #sensor.sleep()
+    sensor.sleep(sleep=False)
 
     #initiate_json()
     initiate_json(json_path)
