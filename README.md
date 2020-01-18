@@ -53,28 +53,30 @@ Not Working and on the TODO list:
 
 * Install raspbian on the pi (this is better than NOOBS I believe because you can setup headless easier).
 * Optionally, configure the Pi to be headless by configuring wireless and enabling SSH  before inserting the SD Card into the Pi (https://www.raspberrypi.org/documentation/configuration/wireless/headless.md)
-* Boot the Pi and SSH in.
+* Boot the Pi, SSH in and set a password.
 * Depending on your raspbian image you may need to install git and other tools (python 2 and 3) first
 ```
+passwd
 sudo apt update
-sudo apt install git python-pip python3-pip
+sudo apt install git python3-pip
+#sudo apt install python-pip 
 ```
 * Clone this (or a forked copy) of this repo to your pi: 
 ```
 git clone https://github.com/ugoogalizer/aqi-pi.git
 cd aqi-pi
 ```
-### Web Server
+### Lighttp Web Server (basic web page)
 
 * Copy the contents of the html directory into /var/www/html and install some python2 packages and a lightweight HTTP server
 ```
-sudo apt install lighttpd python-serial python-enum
+sudo apt install lighttpd ##### python-serial python-enum
 sudo cp ./html/* /var/www/html
 ```
 TODO migrate python 2 scripts to python 3
 TODO setup requirements.txt to automatically collect python prerequisites
 
-## OLED Display Setup
+### OLED Display Setup
 
 Don't plug in the OLED display to your pi yet...
 
@@ -83,9 +85,15 @@ On the raspberry pi (as per https://learn.adafruit.com/adafruit-pioled-128x32-mi
 ```
 
 sudo pip3 install adafruit-circuitpython-ssd1306 # Required for the display
-sudo apt-get install python3-pil
+####sudo apt-get install python3-pil # Not sure what required for
+```
+
+### Setup for RESTful API
+
+```
 sudo pip3 install flask # for the REST API
 ```
+
 
 ### Enable I2C and Serial Port on Raspberry Pi
 As per: https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c
@@ -93,7 +101,7 @@ As per: https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/co
 Use install required testing software, use raspi-config to enable I2C Interface and (optionally) use raspi-config to update localisation options
 
 ```
-sudo apt-get install -y python-smbus i2c-tools
+sudo apt-get install -y python-smbus i2c-tools ## Required for the display
 sudo raspi-config
   > Interfacing Options
     > I2C
@@ -132,6 +140,17 @@ sudo python2 ./python/aqi.py
 ```
 *NB awi.py is currently written for python2 and is incompatible with python3*
 
+
+### Python3 Sensor: 
+
+Python 3 alternative: 
+```
+sudo pip3 install py-sds011 python-dateutil
+sudo python3 ./python/aqi-sensor.py
+
+```
+
+
 ### Run the Display: 
 Displays the latest measurement from the sensor on the screen.
 On the raspberry pi from the local copy of the git repo, run: 
@@ -169,15 +188,16 @@ NOTE! These service definitions hard code where to find the git repo, if not in 
 
 
 ```
-sudo cp ./systemd/aqi_sensor.service ./systemd/aqi_display.service ./systemd/aqi_restful_api.service /etc/systemd/system/
-sudo chmod 644 /etc/systemd/system/aqi_sensor.service /etc/systemd/system/aqi_display.service /etc/systemd/system/aqi_restful_api.service
+sudo cp ./systemd/aqi_sensor.service ./systemd/aqi-sensor.service ./systemd/aqi_display.service ./systemd/aqi_restful_api.service /etc/systemd/system/
+sudo chmod 644 /etc/systemd/system/aqi_sensor.service  /etc/systemd/system/aqi-sensor.service /etc/systemd/system/aqi_display.service /etc/systemd/system/aqi_restful_api.service
 mkdir ./log
 sudo systemctl daemon-reload
 
 ```
 To enable the services on boot:
 ```
-sudo systemctl enable aqi_sensor
+# sudo systemctl enable aqi_sensor
+sudo systemctl enable aqi-sensor
 sudo systemctl enable aqi_display
 sudo systemctl enable aqi_restful_api
 ```
@@ -185,26 +205,31 @@ sudo systemctl enable aqi_restful_api
 To manually Start / Stop / Restart / Status for each service:
 
 ```
-sudo systemctl start aqi_sensor
+#sudo systemctl start aqi_sensor
+sudo systemctl start aqi-sensor
 sudo systemctl start aqi_display
 sudo systemctl start aqi_restful_api
 
-sudo systemctl stop aqi_sensor
+#sudo systemctl stop aqi_sensor
+sudo systemctl stop aqi-sensor
 sudo systemctl stop aqi_display
 sudo systemctl stop aqi_restful_api
 
-sudo systemctl restart aqi_sensor
+#sudo systemctl restart aqi_sensor
+sudo systemctl restart aqi-sensor
 sudo systemctl restart aqi_display
 sudo systemctl restart aqi_restful_api
 
-sudo systemctl status aqi_sensor
+#sudo systemctl status aqi_sensor
+sudo systemctl status aqi-sensor
 sudo systemctl status aqi_display
 sudo systemctl status aqi_restful_api
 ```
 
 Disable the services on boot: 
 ```
-sudo systemctl disable aqi_sensor
+#sudo systemctl disable aqi_sensor
+sudo systemctl disable aqi-sensor
 sudo systemctl disable aqi_display
 sudo systemctl disable aqi_restful_api
 ```
@@ -236,14 +261,6 @@ https://cdn-reichelt.de/documents/datenblatt/X200/SDS011-DATASHEET.pdf
 
 
 
-### Python3 Sensor: 
-
-```
-
-sudo pip3 install py-sds011 python-dateutil
-sudo python3 ./python/sensor3.py
-
-```
 
 ### Reduce Power Consumption on the Pi Zero: 
 
