@@ -65,11 +65,6 @@ if __name__ == '__main__':
     # option unit_of_measure (default False) values in pcs/0.01sqf or mass ug/m3
     sensor = SDS011(port, timeout=timeout, unit_of_measure=unit_of_measure)
 
-    # Set dutycyle to nocycle (permanent)
-    sensor.reset()
-
-    #Start off in Sleeping State 
-    #sensor.workstate = SDS011.WorkStates.Sleeping
         
     # raise KeyboardInterrupt
     # Now we have some details about it
@@ -79,10 +74,13 @@ if __name__ == '__main__':
     print("Current device cycle (0 is permanent on): ", sensor.dutycycle)
     print(sensor.workstate)
     print(sensor.reportmode)
-    
-    
 
 
+    # Set dutycyle to nocycle (permanent)
+    sensor.reset()
+
+    #Start off in Sleeping State 
+    #sensor.workstate = SDS011.WorkStates.Sleeping
 
     #initiate_json()
     initiate_json(json_path)
