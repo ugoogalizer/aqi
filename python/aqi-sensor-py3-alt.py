@@ -1,8 +1,10 @@
 #!/usr/bin/python
 # -*- coding=utf-8 -*-
 # "DATASHEET": http://cl.ly/ekot
-# https://github.com/ikalchev/py-sds011/blob/master/sds011/__init__.py
-from sds011 import SDS011
+# https://pypi.org/project/sds011/
+# https://github.com/menschel/sds011
+#from sds011 import SDS011
+from .sds011 import *
 import time, json
 import logging
 import os
@@ -37,8 +39,19 @@ def initiate_json(file_path):
 
 if __name__ == '__main__':
 
-    sensor = SDS011(port,baudrate=baudrate,use_query_mode=True)
-    sensor.sleep()
+    #sensor = SDS011(port,baudrate=baudrate,use_query_mode=True)
+    #sensor.sleep()
+    print("Connecting to SDS011 and printing some stats:")
+    sds = SDS011(port=port)
+    print(sds)
+    sds.sleep()
+        
+    firmware = sds.get_firmware_version()
+    print("Firmware ver: ", firmware)
+
+    #Set the working period: 
+    sds.set_working_period(rate=5)
+    
 
     #initiate_json()
     initiate_json(json_path)
@@ -60,10 +73,12 @@ if __name__ == '__main__':
             failures = 0
 
             # turn on diode and fans, get a reading
-            sensor.sleep(sleep=False)
+            #sensor.sleep(sleep=False)
+            sds.wakeup()
             print("reading for %s seconds" % read_sec)
             time.sleep(read_sec)
-            values = sensor.query()
+            #values = sensor.query()
+            values = sds.read_measurement()
 
             # create timestamp
             aqi_tsp = datetime.now(tzlocal()).isoformat()               
@@ -113,7 +128,8 @@ if __name__ == '__main__':
             print("Going to sleep for %s seconds..." % str(sleep_sec - read_sec))
             logging.info('sleeping for %s seconds' % str(sleep_sec - read_sec))
 
-            sensor.sleep() # turn off fan and diode
+            #sensor.sleep() # turn off fan and diode
+            sds.sleep()
             time.sleep(sleep_sec - read_sec)
 
     except KeyboardInterrupt:
@@ -121,7 +137,8 @@ if __name__ == '__main__':
         pass
     finally:
         print("turning off sensor, saving data")
-        sensor.sleep()
+        #sensor.sleep()
+        sds.sleep()
         # save json
         with open(json_path, 'w') as outfile:
             json.dump(data, outfile)
