@@ -21,7 +21,8 @@ debug = 0       # debug level in sds011 class module
 cycles = 4      # serial read timeout in seconds, dflt 2
 timeout = 2     # timeout on serial line read
 unit_of_measure = SDS011.UnitsOfMeasure.MassConcentrationEuropean
-
+  
+failure_tolerance = 5   # how many failed readings can we tolerate
 
 baudrate = 9600
 
@@ -43,7 +44,6 @@ def printValues(timing, values, unit_of_measure):
         unit = 'pcs/0.01cft'
     print("Waited %d secs\nValues measured in %s:    PM2.5  " %
           (timing, unit), values[1], ", PM10 ", values[0])
-
 
 def initiate_json(file_path):
     """
@@ -88,57 +88,44 @@ if __name__ == '__main__':
                         filename='aqi.log', level=logging.DEBUG)
     logging.info('AQI Monitor has been started!')
 
-    # how many failed readings can we tolerate
-    failure_tolerance = 5
-
     loop_forever = True
     
     try:
         while loop_forever:
-            logging.info('collection is starting')
+            logging.info('Collection is starting')
             failures = 0
 
             # turn on diode and fans, get a reading
-            print("Push sensor into wake state")
+            print("Push sensor into wake state and waiting %s seconds" % read_sec)
             sensor.workstate = SDS011.WorkStates.Measuring
             
-            # Just to demonstrate. Should be 60 seconds to get qualified values.
             # The sensor needs to warm up!
             time.sleep(read_sec)
-            last = time.time()
-            while True:
-                last1 = time.time()
-                print("Taking measurement...")
-                values = sensor.get_values()
-                if values is not None:
-                    printValues(time.time() - last, values, sensor.unit_of_measure)
-    
-                    # create timestamp
-                    aqi_tsp = datetime.now(tzlocal()).isoformat() 
-                    break
-                print("Waited %d seconds, no values read, wait 2 seconds, and try to read again" % (
-                    time.time() - last1))
-                failures +=1 # update failure count
-                if failures > failure_tolerance:
-                    print("too many failures")
-                    break
-                time.sleep(2)
-                
+
+
+            print("Taking measurement...")
+            values = sensor.get_values()
+            # create timestamp at time of measurements
+            aqi_tsp = datetime.now(tzlocal()).isoformat() 
+
+            #Sleep the sensor now we (should) have a measurement
             sensor.workstate = SDS011.WorkStates.Sleeping
-            if failures > failure_tolerance:
-                print("too many failures")
-                break
-            print("Read was succesfull.")
 
-
+            #Check for a valid measurement
             if values is not None and len(values)>0:
-                print(aqi_tsp,", PM2.5: ", values[0], ", PM10: ", values[1])
-                logging.debug("values: PM2.5: {0}, PM10: {1}".format(values[0], values[1]))
+
+                # Create named variables
+                newdata = { 'time': aqi_tsp} 
+                newdata['pm25'] = values[1]
+                newdata['pm10'] = values[0]
+
+                print(aqi_tsp,", PM2.5: ", newdata['pm25'], ", PM10: ", newdata['pm10'])
+                logging.debug("values: PM2.5: {0}, PM10: {1}".format(newdata['pm25'], newdata['pm10']))
                     
                 # csv
                 logging.debug('Opening aqi.csv')
                 csv_file = open(csv_path, 'a')
-                csv_file.write("{0},{1},{2}\n".format(values[0],values[1],aqi_tsp))
+                csv_file.write("{0},{1},{2}\n".format(newdata['pm25'],newdata['pm10'],aqi_tsp))
                 csv_file.close()
                 logging.debug('Closed aqi.csv')
 
@@ -152,10 +139,6 @@ if __name__ == '__main__':
                     data.pop(0)
 
                 # append new values
-                newdata = { 'time': aqi_tsp} 
-                if len(values)>0:
-                    newdata['pm25'] = values[0]
-                    newdata['pm10'] = values[1]
                     # only append if we have new values
                     data.append(newdata)
 
@@ -163,7 +146,13 @@ if __name__ == '__main__':
                 with open(json_path, 'w') as outfile:
                     json.dump(data, outfile)
             else:
+                #Reading has failed, handle accordingly
                 print("no reading, will retry")
+              
+                failures +=1 # update failure count
+                if failures > failure_tolerance:
+                    print("too many failures")
+                    break
               
 
             print("Going to sleep for %s seconds..." % str(sleep_sec - read_sec))
