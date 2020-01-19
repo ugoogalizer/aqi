@@ -69,7 +69,7 @@ if __name__ == '__main__':
     sensor.reset()
 
     #Start off in Sleeping State 
-    sensor.workstate = SDS011.WorkStates.Sleeping
+    #sensor.workstate = SDS011.WorkStates.Sleeping
         
     # raise KeyboardInterrupt
     # Now we have some details about it
@@ -111,6 +111,7 @@ if __name__ == '__main__':
             last = time.time()
             while True:
                 last1 = time.time()
+                print("Taking measurement...")
                 values = sensor.get_values()
                 if values is not None:
                     printValues(time.time() - last, values, sensor.unit_of_measure)
