@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding=utf-8 -*-
 # "DATASHEET": http://cl.ly/ekot
-# https://gist.github.com/kadamski/92653913a53baf9dd1a8
+# https://github.com/menschel/sds011/blob/master/sds011/sds011.py
 from sds011 import SDS011
 import time, json
 import logging
@@ -55,6 +55,8 @@ if __name__ == '__main__':
     try:
         while loop_forever:
             logging.info('collection is starting')
+            firmwareVer = sensor.get_firmware_version()
+            print("Firmware version:", firmwareVer)
             failures = 0
 
             # turn on diode and fans, get a reading
