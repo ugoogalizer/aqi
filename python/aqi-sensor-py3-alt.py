@@ -43,6 +43,7 @@ if __name__ == '__main__':
     #sensor.sleep()
     print("Connecting to SDS011 and printing some stats:")
     sds = SDS011(port=port)
+    print("Stats:")
     print(sds)
     sds.sleep()
         
