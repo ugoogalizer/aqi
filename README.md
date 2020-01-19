@@ -172,21 +172,13 @@ CTRL+C quits the display (and now turns off the display rather than leaves it to
 Run a simple RESTful interface using Python3 and Flask that returns the latest sensor status in JSON format, intended for ingestion into Home Assistant (https://www.home-assistant.io/integrations/rest/) but could be ingested by other systems.
 On the raspberry pi from the local copy of the git repo, run: 
 ```bash
-sudo python3 ./python/restful_api.py
+python3 ./python/restful_api.py
 ```
 
-API is available at: http://0.0.0.0:81/aqi/v1.0/aqi and returns JSON: 
-```json
-{
-  "pm25": 300.5, 
-  "pm10": 70.0, 
-  "time": "20.04.2019 17:04:05", 
-  "pm10 AQI": 1, 
-  "Overall AQI band": "low", 
-  "Overall AQI": 1, 
-  "pm25 AQI": 1
-}
-```
+API is available at: http://0.0.0.0:8181/
+* To get the latest sensor observation in JSON: http://0.0.0.0:8181/aqi/v1.0/latest
+* To get all observations in JSON: http://0.0.0.0:8181/aqi/v1.0/all
+
 
 Inspiration for this REST implementation came from: https://auth0.com/blog/developing-restful-apis-with-python-and-flask/ and http://mattrichardson.com/Raspberry-Pi-Flask/
 
