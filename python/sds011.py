@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+
+# https://gitlab.com/frankrich/sds011_particle_sensor/blob/master/
+
 """
 Copyright 2016, Frank Heuer, Germany
 
@@ -37,6 +40,7 @@ erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 This module contains the SDS011 class for controlling
 the sds011 particle matter sensor from Nova using the HL-340-serial TTL USB adapter
 """
+
 
 # this module has been updated by Teus Hagen May 2017
 # all errors introduced with this update come from teus
