@@ -49,7 +49,7 @@ def initiate_json(file_path):
     """
     Check to see if the aqi.json exists in the html directory and add it if not
     """
-    if not exists(file_path):
+    if not exists(file_path) or os.stat(file_path).st_size == 0:
         with open(file_path,"w") as fresh_file:
             fresh_file.write('[]')
 
@@ -78,7 +78,6 @@ if __name__ == '__main__':
 
     # Set dutycyle to nocycle (permanent)
     sensor.reset()
-
     #Start off in Sleeping State 
     #sensor.workstate = SDS011.WorkStates.Sleeping
 
@@ -100,7 +99,7 @@ if __name__ == '__main__':
             failures = 0
 
             # turn on diode and fans, get a reading
-            print("%d time: push sensor into wake state")
+            print("Push sensor into wake state")
             sensor.workstate = SDS011.WorkStates.Measuring
             
             # Just to demonstrate. Should be 60 seconds to get qualified values.
@@ -175,20 +174,18 @@ if __name__ == '__main__':
 
         # end of test
         print("\nSensor reset to normal")
-        sensor.reset()
+        sensor.workstate = SDS011.WorkStates.Sleeping
         sensor = None
 
 
     except KeyboardInterrupt:
-        sensor.reset()
-        sensor = None
-        sys.exit("Sensor reset due to a KeyboardInterrupt")
+        print("Sensor reset due to a KeyboardInterrupt")
         loop_forever = False
         pass
     finally:
         print("turning off sensor, saving data")
         print("\nSensor reset to normal")
-        sensor.reset()
+        sensor.workstate = SDS011.WorkStates.Sleeping
         sensor = None
         #sensor.sleep()
         #sds.sleep()
