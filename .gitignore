@@ -24,3 +24,4 @@ aqi.orig/visualisation.py
 aqi.orig/tests/__init__.py
 aqi.orig/tests/test_calculator.py
 aqi.orig/tests/test_sensor.py
+.vscode/settings.json
