@@ -3,6 +3,8 @@ from flask import Flask, jsonify
 app = Flask(__name__)
 import json
  
+port=8181
+
 @app.route("/")
 def hello_world():
   return "Hello, World!  This is the RESTful API server for Air Quality Monitoring.  Try hitting /aqi/v1.0/aqi"
@@ -65,4 +67,4 @@ def get_all_aqi():
 #    return jsonify({'tasks': tasks})
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=81, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=True)
