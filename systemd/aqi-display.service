@@ -1,0 +1,12 @@
+ [Unit]
+ Description=Air Quality - Display Service
+ After=multi-user.target
+
+ [Service]
+ Type=idle
+ ExecStart=/usr/bin/python3 -u /home/pi/aqi-pi/python/aqi-display.py
+ StandardOutput=file:/home/pi/aqi-pi/log/aqi-display.log
+ StandardError=file:/home/pi/aqi-pi/log/aqi-display.log
+
+ [Install]
+ WantedBy=multi-user.target

@@ -201,8 +201,8 @@ To enable the services on boot:
 ```
 # sudo systemctl enable aqi_sensor
 sudo systemctl enable aqi-sensor
-sudo systemctl enable aqi_display
-sudo systemctl enable aqi_restful_api
+sudo systemctl enable aqi-display
+sudo systemctl enable aqi-restful-api
 ```
 
 To manually Start / Stop / Restart / Status for each service:
@@ -211,22 +211,22 @@ To manually Start / Stop / Restart / Status for each service:
 #sudo systemctl start aqi_sensor
 sudo systemctl start aqi-sensor
 sudo systemctl start aqi_display
-sudo systemctl start aqi_restful_api
+sudo systemctl start aqi-restful-api
 
 #sudo systemctl stop aqi_sensor
 sudo systemctl stop aqi-sensor
 sudo systemctl stop aqi_display
-sudo systemctl stop aqi_restful_api
+sudo systemctl stop aqi-restful-api
 
 #sudo systemctl restart aqi_sensor
 sudo systemctl restart aqi-sensor
 sudo systemctl restart aqi_display
-sudo systemctl restart aqi_restful_api
+sudo systemctl restart aqi-restful-api
 
 #sudo systemctl status aqi_sensor
 sudo systemctl status aqi-sensor
 sudo systemctl status aqi_display
-sudo systemctl status aqi_restful_api
+sudo systemctl status aqi-restful-api
 ```
 
 Disable the services on boot: 
@@ -234,7 +234,7 @@ Disable the services on boot:
 #sudo systemctl disable aqi_sensor
 sudo systemctl disable aqi-sensor
 sudo systemctl disable aqi_display
-sudo systemctl disable aqi_restful_api
+sudo systemctl disable aqi-restful-api
 ```
 
 ## Optional Steps

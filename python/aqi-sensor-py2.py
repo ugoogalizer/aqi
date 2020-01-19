@@ -19,7 +19,7 @@ MODE_QUERY = 1
 
 ser = serial.Serial()
 
-sleep_sec = 300 #1 minute
+sleep_sec = 60 #1 minute
 stable_measurements = 15
 
 # pi zero w
@@ -146,7 +146,7 @@ if __name__ == "__main__":
                 # create timestamp
                 # aqi_tsp = datetime.now(tzlocal()).isoformat()      
                 if values is not None and len(values)>0:
-                    print(aqi_tsp,", PM2.5: ", values[0], ", PM10: ", values[1])
+                    print(", PM2.5: ", values[0], ", PM10: ", values[1])
                     logging.debug("values: PM2.5: {0}, PM10: {1}".format(values[0], values[1]))
                     time.sleep(2)
                 else:

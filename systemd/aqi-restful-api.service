@@ -1,0 +1,12 @@
+ [Unit]
+ Description=Air Quality - RESTful API Service
+ After=multi-user.target
+
+ [Service]
+ Type=idle
+ ExecStart=/usr/bin/python3 -u /home/pi/aqi-pi/python/aqi-restful-api.py
+ StandardOutput=file:/home/pi/aqi-pi/log/aqi-restful-api.log
+ StandardError=file:/home/pi/aqi-pi/log/aqi-restful-api.log
+
+ [Install]
+ WantedBy=multi-user.target
