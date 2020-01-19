@@ -28,9 +28,9 @@ function PlotGraph(data) {
     type: "scatter"
   };
     data.forEach(function(val) {
-    trace1.x.push(Date.parse(val["time"]));
+    trace1.x.push(new Date(val.time));
     trace1.y.push(val["pm25"]);
-    trace2.x.push(Date.parse(val["time"]));
+    trace2.x.push(new Date(val.time));
     trace2.y.push(val["pm10"]);
     });
   Plotly.newPlot('AQIplot', [trace1, trace2]);
