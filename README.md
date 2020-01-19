@@ -191,16 +191,16 @@ NOTE! These service definitions hard code where to find the git repo, if not in 
 
 
 ```
-sudo cp ./systemd/aqi_sensor.service ./systemd/aqi-sensor.service ./systemd/aqi_display.service ./systemd/aqi_restful_api.service /etc/systemd/system/
-sudo chmod 644 /etc/systemd/system/aqi_sensor.service  /etc/systemd/system/aqi-sensor.service /etc/systemd/system/aqi_display.service /etc/systemd/system/aqi_restful_api.service
+sudo cp ./systemd/aqi-sensor-py2.service ./systemd/aqi-sensor-py3.service ./systemd/aqi-display.service ./systemd/aqi-restful-api.service /etc/systemd/system/
+sudo chmod 644 /etc/systemd/system/aqi-sensor-py2.service  /etc/systemd/system/aqi-sensor-py3.service /etc/systemd/system/aqi-display.service /etc/systemd/system/aqi-restful-api.service
 mkdir ./log
 sudo systemctl daemon-reload
 
 ```
 To enable the services on boot:
 ```
-# sudo systemctl enable aqi_sensor
-sudo systemctl enable aqi-sensor
+# sudo systemctl enable aqi-sensor-py3
+sudo systemctl enable aqi-sensor-py2
 sudo systemctl enable aqi-display
 sudo systemctl enable aqi-restful-api
 ```
@@ -208,32 +208,32 @@ sudo systemctl enable aqi-restful-api
 To manually Start / Stop / Restart / Status for each service:
 
 ```
-#sudo systemctl start aqi_sensor
-sudo systemctl start aqi-sensor
-sudo systemctl start aqi_display
+#sudo systemctl start aqi-sensor-py3
+sudo systemctl start aqi-sensor-py2
+sudo systemctl start aqi-display
 sudo systemctl start aqi-restful-api
 
-#sudo systemctl stop aqi_sensor
-sudo systemctl stop aqi-sensor
-sudo systemctl stop aqi_display
+#sudo systemctl stop aqi-sensor-py3
+sudo systemctl stop aqi-sensor-py2
+sudo systemctl stop aqi-display
 sudo systemctl stop aqi-restful-api
 
-#sudo systemctl restart aqi_sensor
-sudo systemctl restart aqi-sensor
-sudo systemctl restart aqi_display
+#sudo systemctl restart aqi-sensor-py3
+sudo systemctl restart aqi-sensor-py2
+sudo systemctl restart aqi-display
 sudo systemctl restart aqi-restful-api
 
-#sudo systemctl status aqi_sensor
-sudo systemctl status aqi-sensor
-sudo systemctl status aqi_display
+#sudo systemctl status aqi-sensor-py3
+sudo systemctl status aqi-sensor-py2
+sudo systemctl status aqi-display
 sudo systemctl status aqi-restful-api
 ```
 
 Disable the services on boot: 
 ```
-#sudo systemctl disable aqi_sensor
-sudo systemctl disable aqi-sensor
-sudo systemctl disable aqi_display
+#sudo systemctl disable aqi-sensor-py3
+sudo systemctl disable aqi-sensor-py2
+sudo systemctl disable aqi-display
 sudo systemctl disable aqi-restful-api
 ```
 
