@@ -1,12 +1,14 @@
- [Unit]
- Description=Air Quality - Sensor Service
- After=multi-user.target
+[Unit]
+Description=Air Quality - Sensor Service
+After=multi-user.target
 
- [Service]
- Type=idle
- ExecStart=/usr/bin/python3 -u /home/pi/aqi-pi/python/aqi-sensor-py3.py
- StandardOutput=file:/home/pi/aqi-pi/log/aqi-sensor-py3.log
- StandardError=file:/home/pi/aqi-pi/log/aqi-sensor-py3.log
+[Service]
+User=pi
+Group=pi
+Type=idle
+ExecStart=/usr/bin/python3 -u /home/pi/aqi-pi/python/aqi-sensor-py3-alt.py
+StandardOutput=file:/home/pi/aqi-pi/log/aqi-sensor-py3.log
+StandardError=file:/home/pi/aqi-pi/log/aqi-sensor-py3.log
 
- [Install]
- WantedBy=multi-user.target
+[Install]
+WantedBy=multi-user.target

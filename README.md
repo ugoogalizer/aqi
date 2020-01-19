@@ -58,7 +58,13 @@ Not Working and on the TODO list:
 ```
 passwd
 sudo apt update
+sudo apt-get upgrade
 sudo apt install git python3-pip
+sudo usermod -a -G tty pi
+sudo touch /var/www/html/aqi.json
+sudo touch /var/www/html/aqi.csv
+sudo chmod 777 /var/www/html/aqi.json
+/var/www/html/aqi.csv
 #sudo apt install python-pip 
 ```
 * Clone this (or a forked copy) of this repo to your pi: 
@@ -83,12 +89,12 @@ TODO setup requirements.txt to automatically collect python prerequisites
 
 Don't plug in the OLED display to your pi yet...
 
-### Install Python Libs
+### Install Python Libs The Display Requires
 On the raspberry pi (as per https://learn.adafruit.com/adafruit-pioled-128x32-mini-oled-for-raspberry-pi/usage)
 ```
 
-sudo pip3 install adafruit-circuitpython-ssd1306 # Required for the display
-####sudo apt-get install python3-pil # Not sure what required for
+sudo pip3 install adafruit-circuitpython-ssd1306 watchdog # Required for the display
+sudo apt-get install python3-pil # Required for the display's fonts
 ```
 
 ### Setup for RESTful API
@@ -148,8 +154,8 @@ sudo python2 ./python/aqi.py
 
 Python 3 alternative: 
 ```
-sudo pip3 install py-sds011 python-dateutil
-sudo python3 ./python/aqi-sensor.py
+# sudo pip3 install py-sds011 python-dateutil
+python3 ./python/aqi-sensor-py3-alt.py
 
 ```
 
@@ -158,7 +164,7 @@ sudo python3 ./python/aqi-sensor.py
 Displays the latest measurement from the sensor on the screen.
 On the raspberry pi from the local copy of the git repo, run: 
 ```
-sudo python3 ./python/display.py
+python3 ./python/aqi-display.py
 ```
 CTRL+C quits the display (and now turns off the display rather than leaves it to run and burn out your screen)
 
