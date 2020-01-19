@@ -139,8 +139,7 @@ if __name__ == '__main__':
                     data.pop(0)
 
                 # append new values
-                    # only append if we have new values
-                    data.append(newdata)
+                data.append(newdata)
 
                 # save it
                 with open(json_path, 'w') as outfile:
