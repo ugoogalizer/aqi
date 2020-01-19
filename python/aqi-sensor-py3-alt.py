@@ -12,7 +12,7 @@ from os.path import exists
 from datetime import datetime
 from dateutil.tz import tzlocal
 
-sleep_sec = 60 #frequency of measurements (60sec = 1 minute)
+sleep_sec = 300 #frequency of measurements (60sec = 1 minute)
 read_sec = 15 # how many seconds to read for
 data_limit = 10000 # how many measurements to maintain in json
 

@@ -13,13 +13,13 @@ Working
 * RESTful API (intended to access from Home Assistant (homeassistant.io))
 * Home Assistant yaml configuration to read from RESTful interface
 * Autostart of sensor and rest API (optional screen - don't want it on all the time..)
+* No longer reliant on sudo to run Python
+* Migrate sensor code from Python2 to Python3 (Thanks to CameronLamont)
 
 Not Working and on the TODO list: 
 * Handle malformed sensor readings - is possibly crashing the display?
 * HTTP webpage (plot.ly) displaying historic sensor measurements
-* Reduce reliance on sudo to run Python
 * Understand and fix if neccesary the AQI definitions
-* Migrate sensor code from Python2 to Python3
 * Run code in python virtual environment
 * Tidy up repo removing unused artifacts
 * Publish to a public location, current plan is to http://sensor.community (also known as https://luftdaten.info/ - https://meine.luftdaten.info/)
@@ -64,8 +64,18 @@ sudo usermod -a -G tty pi
 sudo touch /var/www/html/aqi.json
 sudo touch /var/www/html/aqi.csv
 sudo chmod 777 /var/www/html/aqi.json
-/var/www/html/aqi.csv
+sudo chmod 777 /var/www/html/aqi.csv
 #sudo apt install python-pip 
+```
+Get your timezone correct
+```
+sudo raspi-config
+  > Localisation
+    > Change Locale
+      > en_AU.UTF-8 (or whereever you are)
+    > Change Timezone
+      > (Whereever you are)
+  > Finish
 ```
 * Clone this (or a forked copy) of this repo to your pi: 
 ```
@@ -76,8 +86,8 @@ cd aqi-pi
 
 * Copy the contents of the html directory into /var/www/html and install some python2 packages and a lightweight HTTP server
 ```
-sudo apt install lighttpd ##### 
-sudo apt install python-serial  ### Used by the py2 version.
+sudo apt install lighttpd ##### Used to host the basic webpage
+sudo apt install python-serial  ### Used by the py2 version only
 
 #####python-enum
 sudo cp ./html/* /var/www/html
@@ -85,7 +95,14 @@ sudo cp ./html/* /var/www/html
 TODO migrate python 2 scripts to python 3
 TODO setup requirements.txt to automatically collect python prerequisites
 
-### OLED Display Setup
+
+### Setup for RESTful API
+
+```
+sudo pip3 install flask # for the REST API
+```
+
+## OLED Display Setup
 
 Don't plug in the OLED display to your pi yet...
 
@@ -96,13 +113,6 @@ On the raspberry pi (as per https://learn.adafruit.com/adafruit-pioled-128x32-mi
 sudo pip3 install adafruit-circuitpython-ssd1306 watchdog # Required for the display
 sudo apt-get install python3-pil # Required for the display's fonts
 ```
-
-### Setup for RESTful API
-
-```
-sudo pip3 install flask # for the REST API
-```
-
 
 ### Enable I2C and Serial Port on Raspberry Pi
 As per: https://learn.adafruit.com/adafruits-raspberry-pi-lesson-4-gpio-setup/configuring-i2c
@@ -119,11 +129,6 @@ sudo raspi-config
     > Serial
       > Enable: Yes
       > Login Shell: No
-  > Localisation
-    > Change Locale
-      > en_AU.UTF-8 (or whereever you are)
-    > Change Timezone
-      > (Whereever you are)
   > Finish
 sudo shutdown -h now
 ```
@@ -197,8 +202,8 @@ sudo systemctl daemon-reload
 ```
 To enable the services on boot:
 ```
-# sudo systemctl enable aqi-sensor-py3
-sudo systemctl enable aqi-sensor-py2
+sudo systemctl enable aqi-sensor-py3
+# sudo systemctl enable aqi-sensor-py2
 sudo systemctl enable aqi-display
 sudo systemctl enable aqi-restful-api
 ```
@@ -206,34 +211,40 @@ sudo systemctl enable aqi-restful-api
 To manually Start / Stop / Restart / Status for each service:
 
 ```
-#sudo systemctl start aqi-sensor-py3
-sudo systemctl start aqi-sensor-py2
+sudo systemctl start aqi-sensor-py3
+# sudo systemctl start aqi-sensor-py2
 sudo systemctl start aqi-display
 sudo systemctl start aqi-restful-api
 
-#sudo systemctl stop aqi-sensor-py3
-sudo systemctl stop aqi-sensor-py2
+sudo systemctl stop aqi-sensor-py3
+# sudo systemctl stop aqi-sensor-py2
 sudo systemctl stop aqi-display
 sudo systemctl stop aqi-restful-api
 
-#sudo systemctl restart aqi-sensor-py3
-sudo systemctl restart aqi-sensor-py2
+sudo systemctl restart aqi-sensor-py3
+# sudo systemctl restart aqi-sensor-py2
 sudo systemctl restart aqi-display
 sudo systemctl restart aqi-restful-api
 
-#sudo systemctl status aqi-sensor-py3
-sudo systemctl status aqi-sensor-py2
+sudo systemctl status aqi-sensor-py3
+# sudo systemctl status aqi-sensor-py2
 sudo systemctl status aqi-display
 sudo systemctl status aqi-restful-api
 ```
 
 Disable the services on boot: 
 ```
-#sudo systemctl disable aqi-sensor-py3
+sudo systemctl disable aqi-sensor-py3
 sudo systemctl disable aqi-sensor-py2
 sudo systemctl disable aqi-display
 sudo systemctl disable aqi-restful-api
 ```
+
+To remove all services for whatever reason: 
+```
+sudo rm /etc/systemd/system/aqi*
+```
+
 
 ## Optional Steps
 
