@@ -2,7 +2,7 @@
 from flask import Flask, jsonify
 app = Flask(__name__)
 import json
-
+ 
 @app.route("/")
 def hello_world():
   return "Hello, World!  This is the RESTful API server for Air Quality Monitoring.  Try hitting /aqi/v1.0/aqi"

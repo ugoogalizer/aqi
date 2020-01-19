@@ -4,7 +4,7 @@
 # https://pypi.org/project/sds011/
 # https://github.com/menschel/sds011
 #from sds011 import SDS011
-from .sds011 import *
+from sds011 import *
 import time, json
 import logging
 import os
