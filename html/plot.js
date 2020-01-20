@@ -58,5 +58,5 @@ function PlotGraph2(data) {
       
       }
     });
-  Plotly.newPlot('AQIplotBarpm25', [trace1, trace2]);
+  Plotly.newPlot('AQIplotBarpm25', [trace1]);
 }; 
