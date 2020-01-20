@@ -7,6 +7,7 @@ xmlhttp.onreadystatechange = function() {
         var myArr = JSON.parse(this.responseText);
         PlotGraph(myArr);
         PlotGraph2(myArr);
+        PlotGraph3(myArr);
     }
 };
 
@@ -59,4 +60,24 @@ function PlotGraph2(data) {
       }
     });
   Plotly.newPlot('AQIplotBarpm25', [trace1]);
+}; 
+
+
+function PlotGraph3(data) {
+  let trace1 = {
+    x: [],
+    y: [],
+    //mode: "lines"
+    type: "bar",
+    name: "PM2.5"
+  };
+    data.forEach(function(val) {
+      var entryDateTime = new Date(val.time);
+      if (entryDateTime >= (Date.now() - 4*60*60*1000)) {
+        trace1.x.push(entryDateTime);
+        trace1.y.push(val["pm25"]);
+      
+      }
+    });
+  Plotly.newPlot('AQIplotBar4houpm25', [trace1]);
 }; 
