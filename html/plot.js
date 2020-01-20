@@ -69,7 +69,22 @@ function PlotGraph3(data) {
     y: [],
     //mode: "lines"
     type: "bar",
-    name: "PM2.5"
+    name: "PM2.5",
+    colorscale: [
+      [0, "#538135"],
+      [9, "#538135"],
+      [9, "#2f5496"],
+      [26, "#2f5496"],
+      [26, "#ffc000"],
+      [40, "#ffc000"],
+      [40, "#ff6600"],
+      [107, "#ff6600"],
+      [107, "#ff3333"],
+      [180, "#ff3333"],
+      [180, "#bb6528"],
+      [250, "#bb6528"],
+      [250, "#000000"]
+    ]
   };
     data.forEach(function(val) {
       var entryDateTime = new Date(val.time);
@@ -78,6 +93,7 @@ function PlotGraph3(data) {
         trace1.y.push(val["pm25"]);
       
       }
+      
     });
   Plotly.newPlot('AQIplotBar4houpm25', [trace1]);
 }; 

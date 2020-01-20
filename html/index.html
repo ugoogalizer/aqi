@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>AQI</title>
+    <title>AQI - Fisher, Canberra, Australia</title>
     <script src="aqi.js"></script>
     <script src="plotly-latest.min.js"></script>
     <script  src="plot.js"></script>
@@ -11,7 +11,7 @@
   </head>
   <body onload="getData()">
     <div class="container">
-      <h1>AQI</h1>
+      <h1>AQI - Fisher, Canberra, Australia</h1>
       <p class='time' id="time"></p>
       <div class='aqi-container' id="containerPm25">
           <div class='aqi-label'>AQI (PM2.5)</div>
@@ -33,6 +33,9 @@
     
     <p class='time'>4 Hour Data Display (PM2.5 Bar Chart)</p>
     <div id="AQIplotBar4houpm25"></div>
+
+    Note: Colour scheme according to ACT Government's scale: https://www.health.act.gov.au/about-our-health-system/population-health/environmental-monitoring/monitoring-and-regulating-air-0
+
     <p class='time'>24 Hour Data Display (PM2.5 Bar Chart)</p>
     <div id="AQIplotBarpm25"></div>
     <p class='time'>24 Hour Data Display (PM2.5 and PM10 Line Chart)</p>
